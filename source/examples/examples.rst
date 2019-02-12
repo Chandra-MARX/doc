@@ -45,4 +45,12 @@ that.)
    background/background
    simobs/simobs
 
+Further examples of |marx| use can be found on the `CIAO thread
+pages <http://cxc.harvard.edu/ciao/threads/all.html>`_:
 
+- `Using MARX to Create an Event File from ChaRT
+  Rays <http://cxc.harvard.edu/ciao/threads/marx/>`_
+- `Creating an Input Spectrum for Running MARX Simulations <http://cxc.harvard.edu/sherpa/threads/marx/>`_
+- `Using MARX to Simulate an Existing Observation <http://cxc.harvard.edu/ciao/threads/marx_sim/>`_
+- `Using MARX to Simulate a Planned
+  Observation <http://cxc.harvard.edu/ciao/threads/marx_unobs_sim/>`_
