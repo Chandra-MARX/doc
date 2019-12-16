@@ -6,7 +6,7 @@ n=`dmlist acis7sbkg.fits header,raw | grep NAXIS2 | awk '{ print $6 }'`
 dmtcalc acis7sbkg.fits temp.fits expression="randnum=$n/3e4*#trand" clobber=yes
 dmcopy "temp.fits[randnum=0:1]" temp2.fits clobber=yes
 
-# Assign some random time during the observation to each photons.
+# Assign some random time during the observation to each photon.
 t0=`dmkeypar diffuse_evt2.fits TSTART echo+`
 t1=`dmkeypar diffuse_evt2.fits TSTOP echo+`
 

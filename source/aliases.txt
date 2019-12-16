@@ -3,7 +3,7 @@
 .. |marx-email| replace:: marx-help at space mit edu
 .. |emailme| replace:: Technical questions should be addressed to |marx-email|
 
-.. _distribution: ftp://space.mit.edu/pub/cxc/marx/v5.4/marx-dist-5.4.0.tar.gz
+.. _distribution: ftp://space.mit.edu/pub/cxc/marx/v5.5/marx-dist-5.5.0.tar.gz
 
 .. _cfitsio: http://heasarc.gsfc.nasa.gov/docs/software/fitsio/c/c_user/cfitsio.html 
 

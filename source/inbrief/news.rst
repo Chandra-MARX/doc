@@ -4,6 +4,28 @@
 Highlights for each version of |marx|
 *************************************
 
+Marx 5.5 (Dec 2019)
+===================
+
+Update `CalDB`_ files that are shipped with |marx| to `CalDB`_ version 4.9.0.
+
+Change column type of PHA and PI columns written by :marxtool:`marx2fits` to float32
+to match the files that CIAO writes.
+
+User-compiled sources (:par:`SourceType="USER"`) have a function called
+``user_create_ray`` which is called with a pointer to ray properties
+(direction, time, and energy). All ray properties used to be undefined before
+calling this function and the user function could return ``-1`` for energy and
+time to have |marx| assign energy and time. Now, ``energy`` is initialized
+*before* ``user_create_ray`` is called, to allow user code that assigns
+locations based on the ray energy.  With this change, marx.par must contain a
+valid specification for the source spectrum, since an energy will be drawn,
+even if the user source later assigns a different value. For
+backwards-compatibility, if ``user_create_ray`` sets the energy to a negative
+value, |marx| will assign the energy drawn before to the variable again.
+
+
+
 Marx 5.4 (Dec 2018)
 ===================
 Update `CalDB`_ files that are shipped with |marx| to `CalDB`_ version 4.8.2.

@@ -7,7 +7,7 @@
 # This is true, even if the previous CIAO environmet is the same version.
 # Due to the >/dev/null the error message is invisible, so it's better to make sure that
 # something is set.
-source ../config.inc
+#source ../config.inc
 
-source "$CIAOSETUP" -o #> /dev/null
+#source "$CIAOSETUP" -o #> /dev/null
 "$@"

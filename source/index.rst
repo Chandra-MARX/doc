@@ -7,14 +7,15 @@ Welcome to MARX's documentation!
 
 
 .. warning:: 
-   MARX 5.0, 5.1, and 5.2 contain a bug that affects the PSF for 
-   simulations of off-axis sources. If you use MARX to simulate any source more
-   than 3 arcmin from the aimpoint, **please upgrade to current version**
-   immediately. See :ref:`installing` for installation instructions.
-   (On-axis sources and simulations that trace the mirror with `SAOTrace`_ are
-   unaffected.)
-   See https://github.com/Chandra-MARX/marx/issues/21 for a detailed
-   description of the issue.
+   
+   This is the last release of the |marx| 5.x series. In the next release, 
+   we will introduce a better treatment of ACIS grades and sub-pixel
+   positions. Also, we will remove a few tools that convert marx binary
+   results into other formats. Going forward, the only supported tool for
+   this purpose is :marxtool:`marx2fits`, followed by standard `CIAO`_
+   procedures to make images or extract spectra. We will remove all the IDL
+   tools shipped with |marx| (e.g. :marxtool:`make_image`) and  
+   :marxtool:`marx2dpde` and :marxtool:`marx2img`.
 
 |marx| is a suite of programs created and maintained by the
 `MIT/CXC/HETG group <http://space.mit.edu/cxc/>`_ group and is designed

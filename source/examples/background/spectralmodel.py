@@ -8,6 +8,7 @@ my_src = get_source()
 
 # set energy grid
 bin_width = 0.01
+import numpy as np
 energies = np.arange(0.03, 12., bin_width)
 
 # evaluate source on energy grid

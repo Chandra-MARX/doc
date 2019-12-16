@@ -33,18 +33,18 @@ been installed.
 
 Next uncompress and untar the file::
 
-    gzip -d marx-dist-5.4.0.tar.gz
-    tar xf marx-dist-5.4.0.tar
+    gzip -d marx-dist-5.5.0.tar.gz
+    tar xf marx-dist-5.5.0.tar
 
 (Some versions of tar can also uncompress the file, permitting the
 above to be accomplished in one step).  At this point the tar file is
 no longer needed so it may be removed::
 
-    rm marx-dist-5.4.0.tar
+    rm marx-dist-5.5.0.tar
 
 Now change to the newly created directory to start the build process::
 
-    cd marx-dist-5.4.0
+    cd marx-dist-5.5.0
 
 The next step is to run the ``configure`` script, which will probe your
 system to see what tools are available for compiling |marx|.  Before
