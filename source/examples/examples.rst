@@ -18,11 +18,11 @@ latter requirement may be accomplished by running::
     .
     .
   marx parameter files may be found in:
-   /opt/marx5.2/share/marx/pfiles/
+   /opt/marx5.5/share/marx/pfiles/
 
 Simply copy the files from the indicated directory to the current one::
 
-  unix% cp /opt/marx5.2/share/marx/pfiles/*.par .
+  unix% cp /opt/marx5.5/share/marx/pfiles/*.par .
 
 In most examples, |marx| is used together with a spectral analysis program to 
 write the input spectrum or to analyze the results. The most
