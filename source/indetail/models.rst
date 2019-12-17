@@ -374,17 +374,21 @@ changes with time, complex extended objects, etc. can be simulated.
    
 A user-defined source model must be created by the user using a language
 such as C and then compiled as a shared object. During run-time,
-|marx|  will dynamically link to this shared object and use it to
-generate rays. To use this source, first and foremost, the underlying
-operating system must support dynamic linking. Operating systems such as
-Linux and Solaris support dynamic linking while others such as NeXT do
-not. It is important to understand that creating a user-defined source
+|marx| will dynamically link to this shared object and use it to
+generate rays.
+It is important to understand that creating a user-defined source
 does not mean that |marx|  must be recompiled. If that were the case,
 then there would be no value to a user-defined source.
 
-Creating a such a source is relatively simple and is best accomplished
+We include several examples in the ``marx/doc/examples/user-source/`` directory
+in the |marx| distribution. Some of the examples might be useful as-is, e.g. a
+source that samples photons from an input event list. Other examples are meant
+to show you how ``USER`` sources can be programmed. If you write a user source
+that you are willing to share with others, please contact |marx-email|.
+
+Creating a ``USER`` source is relatively simple and is best accomplished
 using the C programming language. The C source file must define three
-functions that |marx|  will call during run-time::
+functions that |marx| will call during run-time::
 
        user_open_source
        user_close_source
@@ -475,11 +479,15 @@ has the following prototype::
        int user_create_ray (double *delta_t, double *energy,
                             double *cosx, double *cosy, double *cosz);
 
-Since the purpose of this routine is to assign a ray an energy, time,
-and direction, the parameters are actually pointer types and the
-requested information is passed back to the calling routine via the
-parameter list. It is important to note that the ray is completely
-undefined prior to calling this function.
+Since the purpose of this routine is to assign a ray an energy, time, and
+direction, the parameters are actually pointer types and the requested
+information is passed back to the calling routine via the parameter
+list. Before ``user_create_ray`` is called, |marx| uses the :par:`SpectrumType`
+in ``marx.par`` to assign an energy. This allows user sources to assign a ray
+direction depending on this energy, but it has the downside that the definition
+of :par:`SpectrumType` has to be valid even if ``user_create_ray`` assigns an
+energy for the ray itself.  Except for the energy, the ray is completely
+undefined prior to calling ``user_create_ray``.
 
 The ``delta_t`` parameter is used to give the ray a time-stamp. Actually
 it does not refer directly to the absolute time of the ray; rather, its
@@ -493,12 +501,9 @@ example, if a ray is generated every second,
 should be used. If ``*delta_t`` is set to ``-1.0``, then |marx|  will
 generate the time based on the :par:`SourceFlux` parameter. Otherwise, the
 value should be set in a manner consistent with the flux and the
-geometric area of the mirror.
+geometric area of the mirror. The meaning of the parameters that specify the
+direction cosines should be rather clear.
 
-The meaning of the other parameters that specify the energy and
-direction cosines should be rather clear. If ``energy`` is set to
-``-1.0``, then |marx|  will use the setting of the :par:`SpectrumType`
-parameter to assign an energy to the ray.
 
 Compiling a User-Defined Source
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -580,7 +585,4 @@ was not used by ``user_open_source``. Since the direction cosines passed
 to ``user_open_source`` refers to the vector from the position of the
 source to the origin where the telescope is located, those values were
 saved and used in ``user_create_ray``.
-
-For more complex examples, look at the files under ``marx/doc/examples``
-in the |marx| distribution.
 

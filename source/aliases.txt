@@ -1,6 +1,6 @@
 .. |marx| replace:: **marx**
 
-.. |marx-email| replace:: marx-help at space mit edu
+.. |marx-email| replace:: marx-help@space.mit.edu
 .. |emailme| replace:: Technical questions should be addressed to |marx-email|
 
 .. _distribution: ftp://space.mit.edu/pub/cxc/marx/v5.5/marx-dist-5.5.0.tar.gz
