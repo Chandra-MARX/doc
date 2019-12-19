@@ -44,7 +44,7 @@ no longer needed so it may be removed::
 
 Now change to the newly created directory to start the build process::
 
-    cd marx-dist-5.5.0
+    cd marx-5.5.0
 
 The next step is to run the ``configure`` script, which will probe your
 system to see what tools are available for compiling |marx|.  Before
