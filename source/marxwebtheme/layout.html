@@ -11,7 +11,8 @@
 
 {%- block footer %}
     <div class="footer">
-    MARX support: marx-help at space mit edu 
+    <a href="mailto:marx-help@space.mit.edu">MARX support: marx-help@space.mit.edu</a>
+    <a href="https://accessibility.mit.edu/">Accessibility</a>
     {%- if show_copyright %}
       {%- if hasdoc('copyright') %}
         {% trans path=pathto('copyright'), copyright=copyright|e %}&copy; <a href="{{ path }}">Copyright</a> {{ copyright }}.{% endtrans %}
