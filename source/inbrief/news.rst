@@ -4,6 +4,11 @@
 Highlights for each version of |marx|
 *************************************
 
+Marx 5.5.1 (Dec 2020)
+=====================
+This release just upgrades the `CalDB`_ files that are shipped with |marx|.
+There are no code changes.
+
 Marx 5.5 (Dec 2019)
 ===================
 

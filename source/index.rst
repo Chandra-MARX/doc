@@ -17,6 +17,12 @@ Welcome to MARX's documentation!
    tools shipped with |marx| (e.g. :marxtool:`make_image`) and  
    :marxtool:`marx2dpde` and :marxtool:`marx2img`.
 
+.. warning::
+
+   No testing has yet been done on Apple's new M1 chip since the |marx|
+   developer has no access to such a machine. If you do, please report
+   your experiences to |marx-email|.
+
 |marx| is a suite of programs created and maintained by the
 `MIT/CXC/HETG group <http://space.mit.edu/cxc/>`_ group and is designed
 to enable the user to simulate the on-orbit performance of the Chandra
