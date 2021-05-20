@@ -162,7 +162,20 @@ location is reported when |marx| is invoked as ``marx --help``.
 
 The parameter files are **NOT** automatically loaded by |marx| unless the ``UPARM`` or ``PFILES`` environment variables are set appropriately.  For this
 reason, it is recommended that the user copy these files to the
-directory where the simulation will be performed.  
+directory where the simulation will be performed.
+
+Apple's ARM architecture (M1 chips)
+-----------------------------------
+Limited testing has been done on ARM platforms. As far as we know, |marx| builds just fine with ``gcc``. Note however, that Apple sets ``gcc`` as an alias to its own clang-compiler, so to truely build |marx| with ``gcc``, the real ``gcc`` compiler has to be installed from a different source, e.g. http://hpc.sourceforge.net . When using ``clang`` (or its alias ``gcc``) installed through Apple's Xcode, it might be necessary to explicitly point to the XCode SDK::
+
+  %> setenv CFLAGS "-g -I/Library/Developer/CommandLineTools/SDKs/MacOSX11.0.sdk/usr/include"
+
+before calling the usual::
+
+    %> ./configure
+    %> make
+    %> make install
+
 
 Special cases
 -------------
