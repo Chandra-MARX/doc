@@ -2,4 +2,3 @@
 global color=green dashlist=8 3 width=1 font="helvetica 10 normal roman" select=1 highlite=1 dash=0 fixed=0 edit=1 move=1 delete=1 include=1 source=1
 fk5
 line(5:39:51.5390,-69:45:25.444,5:39:45.7554,-69:45:25.439) # line=0 0 font="helvetica 14 normal roman" text={0.5 arcmin}
-line(5:39:50.7902,-69:45:17.339,5:39:50.6935,-69:45:18.811) # line=0 0
