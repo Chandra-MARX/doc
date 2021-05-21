@@ -8,11 +8,12 @@ all: obs1068_chandra.png compare_sims.png
 
 1068/primary/acisf01068N003_evt2.fits.gz: ../runciaotool.sh
 	../runciaotool.sh download_chandra_obsid 1068
+
 1068/repro/acisf01068_repro_evt2.fits: 1068/primary/acisf01068N003_evt2.fits.gz
 	../runciaotool.sh chandra_repro 1068 1068/repro
 
 obs1068_chandra.png obs1068_chandra.eps: 1068/repro/acisf01068_repro_evt2.fits
-	../runciaotool.sh ds9 -width 800 -height 500 -log -cmap heat $< -crosshair 5256 6890 physical -pan to 5256 6890 physical -bin about 5256 6890 -saveimage $@ -exit
+	../runciaotool.sh ds9 -width 800 -height 500 -log -cmap heat $< -crosshair 5256 6890 physical -pan to 5256 6890 physical -bin about 5256 6890 -regions load all scalebar.reg -saveimage $@ -exit
 
 
 obs1068.arf: 1068/repro/acisf01068_repro_evt2.fits runmkarf.sh ../runciaotool.sh
@@ -37,7 +38,7 @@ marx_saotrace-filtered.fits: gtimarxsaotrace.sh marx_saotrace.fits ../runciaotoo
 	../runciaotool.sh ./$<
 
 compare_sims.png compare_sims.eps: 1068/repro/acisf01068_repro_evt2.fits marx_only.fits marx_saotrace-filtered.fits
-	../runciaotool.sh ds9 -width 800 -height 500 -log -cmap heat $^ -pan to 5256 6890 physical -bin about 5256 6890 -match frame wcs -match bin -frame 1 -regions command 'text 5:39:27.987 -69:43:52.31 # text=Observation font="helvetica 24"' -frame 2 -regions command 'text 5:39:27.987 -69:43:52.31 # text="only MARX" font="helvetica 24"' -frame 3 -regions command 'text 5:39:27.987 -69:43:52.31 # text=SAOTrace font="helvetica 24"' -saveimage $@ -exit
+	../runciaotool.sh ds9 -width 800 -height 500 -log -cmap heat $^ -pan to 5256 6890 physical -bin about 5256 6890 -match frame wcs -match bin -frame 1 -regions command 'text 5:39:27.987 -69:43:52.31 # text=Observation font="helvetica 24"' -frame 2 -regions command 'text 5:39:27.987 -69:43:52.31 # text="only MARX" font="helvetica 24"' -frame 3 -regions command 'text 5:39:27.987 -69:43:52.31 # text=SAOTrace font="helvetica 24"' -regions load all scalebar.reg -saveimage $@ -exit
 
 clean:
 	/bin/rm -f *~ */*~
