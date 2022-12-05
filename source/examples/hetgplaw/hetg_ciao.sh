@@ -21,9 +21,9 @@ tg_create_mask infile="$evtfile" outfile="$reg1afile" \
 
 tg_resolve_events infile="$evtfile" outfile="$evt1afile" \
   regionfile="$reg1afile" acaofffile="$asol1file" \
-  alignmentfile="$asol1file" osipfile=CALDB verbose=0 clobber=yes
+  osipfile=CALDB verbose=0 clobber=yes
 
-tgextract infile="$evt1afile" outfile="$pha2file" mode=h clobber=yes
+tgextract infile="$evt1afile" outfile="$pha2file" mode=h clobber=yes tg_order_list="-1,1"
 
 # make response matrices for the MEG +1 and -1 order
 mkgrmf grating_arm="MEG" order=-1 outfile="${root}meg-1_rmf.fits" srcid=1 detsubsys=ACIS-S3 \
@@ -34,10 +34,10 @@ mkgrmf grating_arm="MEG" order=1 outfile="${root}meg1_rmf.fits" srcid=1 detsubsy
    threshold=1e-06 obsfile="$pha2file" regionfile="$pha2file" \
    wvgrid_arf="compute" wvgrid_chan="compute"
 
-fullgarf phafile="$pha2file"  pharow=9 evtfile="$evtfile" \
+fullgarf phafile="$pha2file"  pharow=3 evtfile="$evtfile" \
    asol="$asol1file" engrid="grid(${root}meg-1_rmf.fits[cols ENERG_LO,ENERG_HI])" \
    maskfile=NONE dafile=NONE dtffile=NONE badpix=NONE rootname="$root" ardlibqual=";UNIFORM;bpmask=0"
 
-fullgarf phafile="$pha2file"  pharow=10 evtfile="$evtfile" \
+fullgarf phafile="$pha2file"  pharow=4 evtfile="$evtfile" \
    asol="$asol1file" engrid="grid(${root}meg1_rmf.fits[cols ENERG_LO,ENERG_HI])" \
    maskfile=NONE dafile=NONE dtffile=NONE badpix=NONE rootname="$root" ardlibqual=";UNIFORM;bpmask=0"

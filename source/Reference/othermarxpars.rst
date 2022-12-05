@@ -731,8 +731,6 @@ The (Xctr,Yctr) are offset at runtime such that (G1Xctr,G1Yctr)=(0,0).
 
 HESF Model Parameters
 ~~~~~~~~~~~~~~~~~~~~~
-.. parameter:: HRC-HESF         
-
 .. parameter:: HESFOffsetX
 
 .. parameter:: HESFOffsetZ

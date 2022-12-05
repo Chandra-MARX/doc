@@ -1,6 +1,6 @@
 % Load the pha's and responses:
 
-()=load_data("hetg_plaw_pha2.fits",[9, 10]);
+()=load_data("hetg_plaw_pha2.fits",[3,4]);
 
 ()=load_arf("hetg_plawMEG_-1_garf.fits");
 ()=load_arf("hetg_plawMEG_1_garf.fits");

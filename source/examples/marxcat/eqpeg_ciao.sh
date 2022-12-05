@@ -14,7 +14,7 @@ tg_create_mask infile="EQPegB.fits" outfile="EQPegB_reg1a.fits" \
 
 tg_resolve_events infile="EQPegB.fits" outfile="EQPegB_evt1a.fits" \
   regionfile="EQPegB_reg1a.fits" acaofffile="EQPeg_asol1.fits" \
-  alignmentfile="EQPeg_asol1.fits" osipfile=CALDB verbose=0 clobber=yes
+  osipfile=CALDB verbose=0 clobber=yes
 
 tgextract infile="EQPegB_evt1a.fits" outfile="EQPegB_pha2.fits" mode=h clobber=yes
 
@@ -23,7 +23,7 @@ tgextract infile="EQPegB_evt1a.fits" outfile="EQPegB_pha2.fits" mode=h clobber=y
 
 tg_resolve_events infile="EQPeg_both.fits" outfile="EQPegB_both_evt1a.fits" \
   regionfile="EQPegB_reg1a.fits" acaofffile="EQPeg_asol1.fits" \
-  alignmentfile="EQPeg_asol1.fits" osipfile=CALDB verbose=0 clobber=yes
+  osipfile=CALDB verbose=0 clobber=yes
 
 tgextract infile="EQPegB_both_evt1a.fits" outfile="EQPegB_both_pha2.fits" mode=h clobber=yes
 

@@ -21,7 +21,7 @@ tg_create_mask infile="$evt2file" outfile="$reg1afile" \
 
 tg_resolve_events infile="$evt2file" outfile="$evt1afile" \
      regionfile="$reg1afile" osipfile="CALDB" acaofffile="$asolfile" \
-     alignmentfile="$asolfile" verbose=$Verbose clobber=yes
+     verbose=$Verbose clobber=yes
 
 tgextract infile="$evt1afile" outfile="$pha2file" tg_order_list="-1,+1" \
   ancrfile=none respfile=NONE inregion_file=none clobber=yes \

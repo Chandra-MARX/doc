@@ -13,7 +13,8 @@ from docutils.parsers.rst import directives
 from sphinx import addnodes
 from sphinx.roles import XRefRole
 from sphinx.domains import ObjType, Index
-from sphinx.directives import ObjectDescription, LiteralInclude
+from sphinx.directives import ObjectDescription
+from sphinx.directives.code import LiteralInclude
 from sphinx.directives.code import dedent_lines
 from sphinx.util.docfields import TypedField
 from sphinx.domains.std import GenericObject, StandardDomain

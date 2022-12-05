@@ -38,13 +38,13 @@ marx_saotrace-filtered.fits: gtimarxsaotrace.sh marx_saotrace.fits ../runciaotoo
 	../runciaotool.sh ./$<
 
 compare_sims.png compare_sims.eps: 1068/repro/acisf01068_repro_evt2.fits marx_only.fits marx_saotrace-filtered.fits
-	../runciaotool.sh ds9 -width 800 -height 500 -log -cmap heat $^ -pan to 5256 6890 physical -bin about 5256 6890 -match frame wcs -match bin -frame 1 -regions command 'text 5:39:27.987 -69:43:52.31 # text=Observation font="helvetica 24"' -frame 2 -regions command 'text 5:39:27.987 -69:43:52.31 # text="only MARX" font="helvetica 24"' -frame 3 -regions command 'text 5:39:27.987 -69:43:52.31 # text=SAOTrace font="helvetica 24"' -regions load all scalebar.reg -saveimage $@ -exit
+	../runciaotool.sh ds9 -width 800 -height 500 -log -cmap heat $^ -pan to 5256 6890 physical -bin about 5256 6890 -match frame wcs -match bin -frame 1 -regions command 'text 5:39:27.987 -69:43:56 # text=Observation font="helvetica 20"' -frame 2 -regions command 'text 5:39:27.987 -69:43:56 # text="only MARX" font="helvetica 20"' -frame 3 -regions command 'text 5:39:27.987 -69:43:56 # text=SAOTrace font="helvetica 20"' -regions load all scalebar.reg -saveimage $@ -exit
 
 clean:
 	/bin/rm -f *~ */*~
 distclean: clean
 	/bin/rm -rf *.tbl *.fits *.par 1068 *.png *.eps *.jpg \
-	marx_onlyx_saotrace obs1068* input_spec* *.reg
+	marx_onlyx_saotrace obs1068* input_spec*
 
 .PHONY: all clean distclean
 

@@ -1,9 +1,9 @@
 # This file is included in both sh scripts and Makefiles
-ISISPATH=/nfs/cxc/a1/${CSR_CARCH}/bin
+ISISPATH=/nfs/mkx/a1/${CSR_CARCH}/bin
 ISIS=${ISISPATH}/isis
 ISISSCRIPT=${ISISPATH}/isis-script
 #MARXPREFIX=${HOME}/sys/${CSR_CARCH}/opt/marx5.1
-MARXPREFIX=/melkor/d1/guenther/marx/installed/marx-5.5.1
+MARXPREFIX=/melkor/d1/guenther/marx/installed/marx-5.5.2
 
 MARXFLUX=${MARXPREFIX}/lib/marx/marxflux
 

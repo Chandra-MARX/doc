@@ -25,26 +25,28 @@ The short-cut
 
 The normal way
 --------------
-First download |marx| from ftp://space.mit.edu/pub/cxc/marx/ where the latest
-`distribution`_ can be found and copy it to a directory that has at least a
+First download |marx| using either the ftp `distribution`_ or through 
+:download:`http <../_static/marx-dist-5.5.2.tar.gz>` 
+(depending on your network, download from http or ftp might work better)
+and copy it to a directory that has at least a
 couple of hundred megabytes of free disk space.  Note that this
 directory and its contents will no longer be needed after |marx| has
 been installed.
 
 Next uncompress and untar the file::
 
-    gzip -d marx-dist-5.5.1.tar.gz
-    tar xf marx-dist-5.5.1.tar
+    gzip -d marx-dist-5.5.2.tar.gz
+    tar xf marx-dist-5.5.2.tar
 
 (Some versions of tar can also uncompress the file, permitting the
 above to be accomplished in one step).  At this point the tar file is
 no longer needed so it may be removed::
 
-    rm marx-dist-5.5.1.tar
+    rm marx-dist-5.5.2.tar
 
 Now change to the newly created directory to start the build process::
 
-    cd marx-5.5.1
+    cd marx-5.5.2
 
 The next step is to run the ``configure`` script, which will probe your
 system to see what tools are available for compiling |marx|.  Before
