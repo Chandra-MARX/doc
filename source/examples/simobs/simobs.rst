@@ -105,8 +105,8 @@ we estimated above and set the remaining parameters to match the setting of the
 observation for the pointing direction, exposure time, etc. To get the numbers
 we display the header (e.g. in `ds9`_) and manually look for the required fits
 header keywords (e.g. ``EXPOSURE`` for :par:`ExposureTime`, ``RA_NOM`` for
-:par:`RA_Nom`, etc.). Note the :par:`TStart` is given in seconds on the space
-craft clock as in the ``TSTART`` and ``TSTOP`` header keywords.
+:par:`RA_Nom`, etc.). Note the :par:`TStart` is given in seconds on the
+spacecraft clock as in the ``TSTART`` and ``TSTOP`` header keywords.
 
 .. literalinclude:: marxonly.sh
    :language: bash
