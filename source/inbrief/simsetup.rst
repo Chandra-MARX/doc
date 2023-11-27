@@ -445,7 +445,7 @@ Aspect Dither Motion
 
 Once the source characteristics and science instrument configuration
 have been specified, the only remaining option the user must choose
-is whether or not to include a simulation of the Chandra aspect
+is whether to include a simulation of the Chandra aspect
 motion. |marx| includes an internal simulation of the standard lissajous
 dither pattern which Chandra traverses over the course of an observation.
 
@@ -454,8 +454,8 @@ of the Chandra aspect dither pattern.  This motion will result in
 a blurring of the source image when viewed in focal plane
 coordinates.
 If a dither model is applied to the simulation, |marx| calculates
-aspect-corrected sky coordinates. These values are ultimately to the FITS events file
-by :marxtool:`marx2fits` is used.
+aspect-corrected sky coordinates. These values are ultimately written to
+the FITS events file by :marxtool:`marx2fits`.
 
 For actual Chandra data sets, residual errors in the aspect correction
 pipeline will introduce uncertainties into the derived Sky X and
@@ -494,7 +494,10 @@ In general, the form of the dither model has been adjusted to
 correspond to the current parameters used for ACIS observations.
 HRC observations with dither can be simulated by adjusting the
 :par:`DitherAmp_RA` and :par:`DitherAmp_Dec` parameters from
-8 arcsec to 20 arcsec.
+16 arcsec to 20 arcsec and :par:`DitherPeriod_RA` and
+:par:`DitherPeriod_Dec` to 768.6 and 1414.2 seconds, respectively.
+Current values for Chandra are listed in the
+`Proposers Observatory Guide (POG) <https://cxc.harvard.edu/proposer/POG/html/chap5.html#tb:dither>`_.
 
 Finally, if :par:`DitherModel=FILE`, |marx| will use the contents on
 an aspect solution file (ASPSOL) to specify the dither motion pattern.
