@@ -15,18 +15,17 @@ operating systems, as well as MacOSX and CYGWIN.
 The short-cut
 -------------
 
-- A script that automates the steps below is included in `CIAO`_ as
-  :ciao:`install_marx`.
-- If you use `macports <https://www.macports.org/>`_,
-  try ``port install marx``.
-  (If you know of any other package manager that includes |marx|
-  please let us know so that we can list it here, too.)
+`CIAO`_ is now distributed as conda packages. |marx| is provided as one
+of those pre-complied binary packages. If you follow the
+`default instruction for the CIAO installation
+<https://cxc.cfa.harvard.edu/ciao/threads/ciao_install_conda/>`_
+marx is included in that install.
 
 
 The normal way
 --------------
 First download |marx| using either the ftp `distribution`_ or through 
-:download:`http <../_static/marx-dist-5.5.2.tar.gz>` 
+:download:`http <../_static/marx-dist-5.5.3.tar.gz>` 
 (depending on your network, download from http or ftp might work better)
 and copy it to a directory that has at least a
 couple of hundred megabytes of free disk space.  Note that this
@@ -35,18 +34,18 @@ been installed.
 
 Next uncompress and untar the file::
 
-    gzip -d marx-dist-5.5.2.tar.gz
-    tar xf marx-dist-5.5.2.tar
+    gzip -d marx-dist-5.5.3.tar.gz
+    tar xf marx-dist-5.5.3.tar
 
 (Some versions of tar can also uncompress the file, permitting the
 above to be accomplished in one step).  At this point the tar file is
 no longer needed so it may be removed::
 
-    rm marx-dist-5.5.2.tar
+    rm marx-dist-5.5.3.tar
 
 Now change to the newly created directory to start the build process::
 
-    cd marx-5.5.2
+    cd marx-5.5.3
 
 The next step is to run the ``configure`` script, which will probe your
 system to see what tools are available for compiling |marx|.  Before
@@ -166,9 +165,10 @@ The parameter files are **NOT** automatically loaded by |marx| unless the ``UPAR
 reason, it is recommended that the user copy these files to the
 directory where the simulation will be performed.
 
-Apple's ARM architecture (M1 chips)
------------------------------------
-Limited testing has been done on ARM platforms. As far as we know, |marx| builds just fine with ``gcc``. Note however, that Apple sets ``gcc`` as an alias to its own clang-compiler, so to truely build |marx| with ``gcc``, the real ``gcc`` compiler has to be installed from a different source, e.g. http://hpc.sourceforge.net . When using ``clang`` (or its alias ``gcc``) installed through Apple's Xcode, it might be necessary to explicitly point to the XCode SDK::
+Apple's ARM architecture (M1/M2 chips)
+--------------------------------------
+Depending on your setup, it might be necessary to explicitly point to the XCode
+SDK, when using ``clang`` (or its alias ``gcc``) installed through Apple's Xcode::
 
   %> setenv CFLAGS "-g -I/Library/Developer/CommandLineTools/SDKs/MacOSX11.0.sdk/usr/include"
 

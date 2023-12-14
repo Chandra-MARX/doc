@@ -49,7 +49,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'MARX'
-copyright = u'2002-2022, Massachusetts Institute of Technology'
+copyright = u'2002-2023, Massachusetts Institute of Technology'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -58,7 +58,7 @@ copyright = u'2002-2022, Massachusetts Institute of Technology'
 # The short X.Y version.
 version = '5.5'
 # The full version, including alpha/beta/rc tags.
-release = '5.5.2'
+release = '5.5.3'
 
 # This is needed for the marxmarkup module.
 # It reads the marx.par file to autogenerate a list of parameters and

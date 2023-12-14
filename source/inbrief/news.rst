@@ -4,6 +4,11 @@
 Highlights for each version of |marx|
 *************************************
 
+Marx 5.5.3 (Dec 2023)
+=====================
+Version 5.5.3 is identical to the previous version 5.5.2 except to a small tweak in the installation scripts that help when compiling marx on Apple’s ARM chips. 
+
+
 Marx 5.5.2 (Dec 2022)
 =====================
 This release just upgrades the `CalDB`_ files that are shipped with |marx|.

@@ -3,5 +3,5 @@ marx SourceFlux=-1 SpectrumType="FILE" SpectrumFile="plawflux.tbl" \
    OutputDir=plaw GratingType="NONE" DetectorType="ACIS-S" \
    DitherModel="INTERNAL" RA_Nom=30 Dec_Nom=40 Roll_Nom=50 \
    SourceRA=30 SourceDEC=40 \
-   Verbose=yes mode=h
+   Verbose=1 mode=h
 

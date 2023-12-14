@@ -3,6 +3,9 @@ Welcome to MARX's documentation!
 
 .. admonition:: Current version of |marx| is |release|. 
 
+   Version 5.5.3 is identical to the previous version 5.5.2
+   except to a small tweak in the installation scripts that help
+   when compiling marx on Apple's ARM chips.
    See :ref:`installing` for installation instructions.
 
 
