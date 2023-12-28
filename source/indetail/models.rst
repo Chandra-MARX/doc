@@ -7,7 +7,7 @@ The spectrum and the spatial shape of the X-ray source
 be either on or off–axis. The sources can have a flat energy spectrum or
 they can use an energy spectrum supplied by the user and in the next section we
 describe those options. Then, we explain the different models for the spatial
-distribution that these source can have on the sky. 
+distribution that these source can have on the sky.
 The following sources are currently available:
 
 - ``POINT``: Point Source
@@ -83,7 +83,7 @@ Spectrum of the simulated X-ray source
 
 In the |marx| parameter file, ``marx.par``, the parameter
 :par:`SpectrumType` is used to specify the function :math:`f_E` for the
-following source types: ``"POINT"``, ``"LINE"``, ``"GAUSS"``, ``"BETA"``, 
+following source types: ``"POINT"``, ``"LINE"``, ``"GAUSS"``, ``"BETA"``,
 ``"DISK"``, and ``"IMAGE"`` (the other source have a source specific way to
 input the energy, e.g. for a ``"SAOSAC"`` source the energy of each ray is
 already included in the ray file).
@@ -108,7 +108,7 @@ external ASCII file. The following parameters describe the source spectrum:
    :par:`SpectrumType="FLAT"` this number must be positive. If
    :par:`SpectrumType="FILE"` this number can be positive to renormalize the
    spectrum file to the given source flux. If it is negative, then the
-   normalization from the :par:`SpectrumFile` will be used. 
+   normalization from the :par:`SpectrumFile` will be used.
 
 .. parameter:: SpectrumFile
 
@@ -119,7 +119,7 @@ external ASCII file. The following parameters describe the source spectrum:
    (the flux in the first row is ignored, because there is no row before
    which would define the lower energy edge of the bin).
    Various tools exist to help in generating this file:
-   
+
        - :marxtool:`marxflux` can be used to generate a file with the right format
          from an `ISIS`_ model,
        - :marxtool:`xspec2marx` helps with converting from
@@ -165,7 +165,7 @@ In |marx| the following parameter selects model for the spatial distribution of 
 
 .. parameter:: SourceType
 
-   The following values are allowed: ``"POINT"``, ``"LINE"``, ``"GAUSS"``, ``"BETA"``, 
+   The following values are allowed: ``"POINT"``, ``"LINE"``, ``"GAUSS"``, ``"BETA"``,
    ``"DISK"``, ``"IMAGE"``, ``"SAOSAC"``, ``"RAYFILE"``, ``"SIMPUT"``, and ``"USER"``. Depending on the source model chosen,
    further parameters (such as the radius of the disk) may be required.
 
@@ -205,7 +205,7 @@ given by
         \frac{1}{2} \big[\delta(\phi - \phi_0)
              + \delta(\phi - \phi_0 - \pi) \big]
 
-for :math:`\theta < \theta_0` and zero otherwise. 
+for :math:`\theta < \theta_0` and zero otherwise.
 
 .. parameter:: S-LinePhi
 
@@ -296,9 +296,9 @@ useful for modeling a supernova remnant.
 IMAGE Source
 ^^^^^^^^^^^^
 This option creates photons distributed on the sky according to an input image.
-The probability that a ray starts at a given position is proportional to the pixel value at this point. 
+The probability that a ray starts at a given position is proportional to the pixel value at this point.
 Within a pixel, the position is randomized.
-|marx| inspects the header of the file for a WCS specification and extracts the pixel scale. 
+|marx| inspects the header of the file for a WCS specification and extracts the pixel scale.
 However, it does **not** extract the position or orientation on the sky.
 |marx| will just assume that the image is centered on the optical axis and that the axes directions
 are aligned with the detector axes. This means that the simulated image may appear to be rotated (if
@@ -328,12 +328,16 @@ Only in very rare cases is this needed for the end-user. More details can be fou
 
 RAYFILE Source
 ^^^^^^^^^^^^^^
-The ``RAYFILE`` source can be used to dublicate the source properties of a previous |marx| simulation.
+The ``RAYFILE`` source can be used to duplicate the source properties of a previous |marx| simulation.
 Using this as a source keeps the photon properties energy and position
 as specified in the ray file.
-Thus, the *source* properties are identical to those used to 
+Thus, the *source* properties are identical to those used to
 generate the original ray file, but the *Chandra response* to them might be
-different, e.g. if a different detector or dither is chosen.
+different, e.g. if a different detector or grating is chosen.
+Simulations with a RAYFILE source need to run with the same settings for the
+dither as the original simulation that produced the ray file because the dither
+pattern is needed for the relative positions of the rays to the pointing
+direction (recorded in the RAYFILE) and the changing detector position over time.
 Rayfiles are produced by setting :par:`DumpToRayFile=yes`.
 
 .. parameter:: RayFile
@@ -545,7 +549,7 @@ with the |marx|  distribution and try to run those.
 Examples of User-Defined Sources
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The simplest source is that of a point source. Although |marx| 
+The simplest source is that of a point source. Although |marx|
 already provides built-in support for this source, it is instructive to
 write it as a user-defined source. Here is the complete C code for such
 a source::
