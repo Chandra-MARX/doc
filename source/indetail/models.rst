@@ -300,13 +300,16 @@ The probability that a ray starts at a given position is proportional to the pix
 Within a pixel, the position is randomized.
 |marx| inspects the header of the file for a WCS specification and extracts the pixel scale.
 However, it does **not** extract the position or orientation on the sky.
-|marx| will just assume that the image is centered on the optical axis and that the axes directions
+|marx| will place the center of the image on the :par:`SourceRA` and :par:`SourceDec` parameters.
+It does not make use of the orientation of the image. Instead, the axes directions
 are aligned with the detector axes. This means that the simulated image may appear to be rotated (if
-the WCS in the input image contains rotaions which are ignored by |marx|) or flipped (if the WCS in the
+the WCS in the input image contains rotations which are ignored by |marx|) or flipped (if the WCS in the
 input image contains a negative step in one direction - |marx| only uses the absolute value of the step)
-or shifted. The purpose of the IMAGE source is to provide simple geometric shapes not covered by the other
-sources, e.g. boxes, ellipses, or Lorenzian profiles.
-If the actual sky position and orientation of the input image matters, use a :ref:`SIMPUT Source`.
+or shifted. The purpose of the IMAGE source is input shapes on the sky beyond the geometric primitives.
+This could be the results of a hydrodynamic simulation, an observed image of an extended object at another
+wavelength, or some other complex shape.
+If orientation of the input image matters, the input image must be prepared in the correct orientation
+or one can use a :ref:`SIMPUT Source`.
 
 .. parameter:: S-ImageFile
 
