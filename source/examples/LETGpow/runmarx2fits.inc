@@ -1,1 +1,0 @@
-marx2fits letgplaw letgplaw_evt2.fits
