@@ -62,8 +62,6 @@ Simulation control
    ``DetOffsetY=0`` always as Y axis translation of the flight
    SIM is not permitted.
 
-.. parameter:: SAOSAC_Color_Rays
-
 
 Output Vectors
 ~~~~~~~~~~~~~~
@@ -319,27 +317,6 @@ HRMA Setup
 .. parameter:: PointingOffsetY
 
 .. parameter:: PointingOffsetZ
-
-EA mirror setup
-~~~~~~~~~~~~~~~
-
-.. parameter:: MirrorRadius1
-
-.. parameter:: MirrorRadius3
-
-.. parameter:: MirrorRadius4
-
-.. parameter:: MirrorRadius6
-
-.. parameter:: MirrorVig
-
-.. parameter:: MirrorUseEA
-
-.. parameter:: MirrorEAFile
-
-.. parameter:: MirrorBlur
-
-.. parameter:: MirrorBlurFile
 
 
 Grating Setup and Control

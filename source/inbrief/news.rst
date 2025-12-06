@@ -136,7 +136,7 @@ listed below (see the commit log of the `git repository
 - |marx| now compiles with ``clang``, the compiler that is shipped with Max OS X-code.
   (Apple sets an alias called ``gcc``, but this really points to ``clang``.)
 - Enhanced support for dithered `SAOTrace`_ rays on input. In particular, that
-  means that the parameter :par:`SAOSAC_Color_Rays` is no longer
+  means that the parameter ``SAOSAC_Color_Rays`` is no longer
   needed. Setting it currently has no effect and this parameter will be removed
   in the next version.
 - :marxtool:`marx2fits` writes more header keywords in the output fits files,

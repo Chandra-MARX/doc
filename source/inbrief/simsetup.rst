@@ -421,7 +421,7 @@ The following sources are currently available:
 - ``RAYFILE``: Input from a |marx| rayfile
 - ``USER``: Dynamically linked user–supplied model
 
-The ``IMAGE``, ``SAOSAC`, and ``RAYFILE`` source options
+The ``IMAGE``, ``SAOSAC``, and ``RAYFILE`` source options
 all take an additional parameter specifying the name of the
 external file to use. With the exception of the ``SAOSAC`` and ``RAYFILE``
 options, all |marx| source models obey the :par:`SourceRA`
