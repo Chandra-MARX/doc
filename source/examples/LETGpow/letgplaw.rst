@@ -73,7 +73,7 @@ Running marx
 The next step is to run |marx| in the desired configuration.  Some
 prefer to use tools such as :marxtool:`pset` to update the ``marx.par``
 file and then run |marx|.  Here, the parameters will be explicitly
-passed to |marx|. Currently, MARX can only be run from the command line. 
+passed to |marx|. Currently, |marx| can only be run from the command line.
 So we run it via :py:func:`subprocess.call` in our Python script:
 
 .. plot::
@@ -176,8 +176,8 @@ diffracts only the very lowest energy photons through an appreciable
 angle.  Finally, if one looks closely enough, the shadowing of the
 mirror support struts may be seen near zeroth order.
 
-Analyzing the simulated data
-----------------------------
+Analyzing the data simulated by marx
+------------------------------------
 
 The (type-II) PHA file, grating ARFs and RMFs can be produced using the
 standard `CIAO`_ tools using the simulated event file

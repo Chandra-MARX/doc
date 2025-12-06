@@ -28,3 +28,5 @@
 
 .. _SIMPUT standard: http://hea-www.harvard.edu/heasarc/formats/simput-1.1.0.pdf
 .. _SIMPUT code: http://www.sternwarte.uni-erlangen.de/research/sixte/simulation.php
+
+.. _Python interface to CIAO: https://cxc.cfa.harvard.edu/ciao/scripting/runtool.html

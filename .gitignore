@@ -8,4 +8,7 @@
 
 *.pyc
 build
-build_figures
+
+# MacOS preview images
+.DS_Store
+

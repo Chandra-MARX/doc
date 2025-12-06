@@ -6,6 +6,7 @@
 *.p
 *.eps
 *.jpg
+*.txt
 
 ACISpowerpileup/fit_search_*/
 ACISpowerpileup/plaw/

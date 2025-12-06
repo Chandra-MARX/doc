@@ -6,7 +6,7 @@ The purpose of this example is to show how to use |marx| to simulate an ACIS
 observation of a point source with a user-specified spectrum.  For
 simplicity, suppose that we wish to simulate a 3000 ksec observation of
 an on-axis point source whose spectrum is represented by an absorbed powerlaw,
-with a spectral index of 1.8, and a column density of 10^22 atoms/cm^2. 
+with a spectral index of 1.8, and a column density of :math:`10^{22}` atoms/cm^2.
 The normalization of the powerlaw will be set to 0.001
 photons/keV/cm^2/s at 1 keV.  The large exposure time was chosen to
 illustrate the consistency of the |marx| ray trace with that of the
@@ -20,35 +20,69 @@ the flux [photons/sec/keV/cm^2] (second column) as a
 function of energy [keV] (first column).  The easiest way to create
 such a file is to make use of a spectral modeling program such as `ISIS`_,
 `Sherpa`_ or `XSpec`_.   The rest of this tutorial is given in the context of
-`ISIS`_.
+`Sherpa`_.
 
-In `ISIS`_ the absorbed powerlaw model is specified using:
+In `Sherpa`_ the absorbed powerlaw model is specified using:
 
-.. sourceinclude:: isismodel.sl
-   :indent: "isis> "
+.. plot::
+    :include-source:
+    :context:
+    :nofigs:
+    :show-source-link: False
 
+    from sherpa.astro import ui
 
-The model parameters lists by `ISIS`_ should look like this::
+    # set source properties
+    ui.set_source(ui.xsphabs.a * ui.xspowerlaw.p)
+    a.nH = 1.
+    p.PhoIndex = 1.8
+    p.norm = 0.001
 
-    phabs(1)*powerlaw (1)
-     idx  param             tie-to  freeze         value         min         max
-      1  phabs(1).nH            0     0                1           0      100000  10^22
-      2  powerlaw(1).norm       0     0            0.001           0        0.01  
-      3  powerlaw(1).PhoIndex   0     0              1.8           1           3  
+    my_src = ui.get_source()
+    print(str(my_src))
+
+The model parameters lists by `Sherpa`_ should look like this:
+
+.. plot::
+    :context:
+    :nofigs:
+    :show-source-link: False
+
+    my_src = ui.get_source()
+    with open("source_description.txt", "w") as op:
+        op.write(str(my_src))
+
+.. include:: source_description.txt
+   :code:
 
 
 The next step is to convert the parameter file ``plaw.p`` to the
-spectrum file that |marx| expects.  The :marxtool:`marxflux` script may be used to
-create a file called :download:`plawflux.tbl` in the appropriate format via:
+spectrum file that |marx| expects. We can use the commands below (see also the `Sherpa`_ thread
+http://cxc.harvard.edu/sherpa/threads/marx/ for another example):
 
-.. include:: run_marxflux.inc
-   :code:
+.. plot::
+    :include-source:
+    :context:
+    :nofigs:
+    :show-source-link: False
 
-This script requires `ISIS`_ to be installed and linked to at least
-version 2.1 of the `S-Lang`_ library.  (For `XSpec`_ users, |marx| is distributed with a
-script called :marxtool:`xspec2marx` that may be used to create such a file,
-and `Sherpa`_ users find instructions here:
-http://cxc.harvard.edu/sherpa/threads/marx/ ). 
+    import numpy as np
+    # set energy grid
+    bin_width = 0.003
+    energies = np.arange(0.03, 12., bin_width)
+
+    # evaluate source on energy grid with lower and upper bin edges
+    flux = my_src(energies, energies + bin_width)
+
+    # MARX input files only have one energy column, and the conventions is that
+    # this hold the UPPER edge of the bin.
+    # Also, we need to divide the flux by the bin width to obtain the flux density.
+    ui.save_arrays("plawflux.tbl", [energies + bin_width, flux / bin_width],
+                ["keV","photons/s/cm**2/keV"], ascii=True, clobber=True)
+
+`ISIS`_ users can make use of the  :marxtool:`marxflux` script and for `XSpec`_ users,
+|marx| is distributed with a script called :marxtool:`xspec2marx` that may be used
+to create such a file.
 
 The ``plawflux.tbl`` file is input to |marx| using the following
 ``marx.par`` parameters::
@@ -64,31 +98,54 @@ used to indicate the integrated flux of the spectrum.  The value of ``-1``
 as given above means that the integrated flux is to be taken from the
 file.
 
-Running marx
-------------
+Running marx for this powerlaw spectrum
+---------------------------------------
 
 The next step is to run |marx| in the desired configuration.  Some
 prefer to use tools such as :marxtool:`pset` to update the ``marx.par``
-file and then run |marx|.  Here, the parameters will be explicitly
-passed to |marx| via the command line:
+file and then run |marx| or to pass the arguments via the command line
+in a shell. Here, we will wrap the |marx| call into a Python script. Since
+|marx| currently does not have a "nice" Python interface, we run it via
+:py:func:`subprocess.call`:
 
-.. literalinclude:: runmarx.inc
-   :language: bash
+.. plot::
+    :include-source:
+    :context:
+    :nofigs:
+    :show-source-link: False
+
+    import subprocess
+
+    out = subprocess.call('marx SourceFlux=-1 SpectrumType="FILE" SpectrumFile="plawflux.tbl" ' + \
+    'ExposureTime=100000 TStart=2012.5 ' + \
+    'OutputDir=plaw GratingType="NONE" DetectorType="ACIS-S" ' + \
+    'DitherModel="INTERNAL" RA_Nom=30 Dec_Nom=40 Roll_Nom=50 ' + \
+    'SourceRA=30 SourceDEC=40 ', shell=True)
 
 This will run the simulation and place the results in a subdirectory
 called ``plaw``.  The results may be converted to a standard Chandra
 level-2 fits file by the :marxtool:`marx2fits` program:
 
-.. literalinclude:: runmarx2fits.inc
-   :language: bash
+.. plot::
+    :include-source:
+    :context:
+    :nofigs:
+    :show-source-link: False
+
+    subprocess.call("marx2fits plaw plaw_evt2.fits", shell=True)
 
 The resulting fits file ``plaw_evt2.fits`` may be further processed
 with standard `CIAO`_ tools.  As some of these tools require the aspect
 history, the :marxtool:`marxasp` program will be used to create an aspect
 solution file that matches the simulation:
 
-.. literalinclude:: runmarxasp.inc
-   :language: bash
+.. plot::
+    :include-source:
+    :context:
+    :nofigs:
+    :show-source-link: False
+
+    subprocess.call("marxasp MarxDir='plaw' OutputFile='plaw_asol1.fits'", shell=True)
 
 
 .. _ex-ciao:
@@ -99,11 +156,33 @@ Armed with the simulated event file ``plaw_evt2.fits`` and the aspect
 solution file ``plaw_asol1.fits``, a PHA file, ARF and RMF may be
 made using the standard `CIAO`_ tools. First, extract the PHA data. The :ciao:`asphist` CIAO
 tool may be used to create an aspect histogram from an aspect solution
-file, as seen in this Bourne shell script:
+file. Again, we are using a `Python interface to CIAO`_ to run the CIAO tools:
 
-.. literalinclude:: plaw_ciao.sh
-   :language: bash
-   :lines: 5-23
+.. plot::
+    :include-source:
+    :context:
+    :nofigs:
+    :show-source-link: False
+
+    from ciao_contrib import runtool as rt
+    # Extraction region parameters: circle of radius R at (X,Y)
+    X=4096.5
+    Y=4096.5
+    R=20.0
+
+    phagrid="pi=1:1024:1"
+
+    evtfile="plaw_evt2.fits"
+    asolfile="plaw_asol1.fits"
+    phafile="plaw_pha.fits"
+    rmffile="plaw_rmf.fits"
+    arffile="plaw_arf.fits"
+    asphistfile="plaw_asp.fits"
+
+    rt.asphist(infile=asolfile, outfile=asphistfile, evtfile=evtfile, clobber=True)
+
+    rt.dmextract(infile=f"{evtfile}[sky=Circle({X},{Y},{R})][bin {phagrid}]",
+    outfile=phafile, clobber=True)
 
 While |marx| strives to accurately model of the Chandra Observatory, there
 are some differences that need to be taken into account when
@@ -123,11 +202,27 @@ Creating an ARF to match a marx simulation
 As mentioned above, |marx| does not implement the ACIS QE uniformity
 maps.  The following commands show how to set the :ciao:`mkarf` parameters 
 to produce an ARF that is consistent with the |marx| effective area (this
-continues the Bourne shell script from the last paragraph):
+continues the Python script from the last paragraph):
 
-.. literalinclude:: plaw_ciao.sh
-   :language: bash
-   :lines: 25-39
+.. plot::
+    :include-source:
+    :context:
+    :nofigs:
+    :show-source-link: False
+
+    # Select a CCD.
+    ccdid=7
+
+    detname=f"ACIS-{ccdid};UNIFORM;bpmask=0"
+    grating="NONE"
+    # For ACIS-I, use engrid="0.3:11.0:0.003". This reflects a limitation of mkrmf.
+    engrid="0.3:12.0:0.003"
+
+    rt.mkarf(mirror="hrma", detsubsys=detname, grating=grating,
+    outfile=arffile,
+    obsfile=evtfile, engrid=engrid, asphistfile=asphistfile,
+    sourcepixelx=X, sourcepixely=Y,
+    maskfile="NONE", pbkfile="NONE", dafile="NONE", clobber=True)
 
 Notice the settings ``detsubsys="ACIS-7;uniform;bpmask=0"`` and ``maskfile=NONE
 pbkfile=NONE dafile=NONE`` that are different from the way a normal Chandra
@@ -158,12 +253,28 @@ passed to :ciao:`mkrmf` to select the appropriate FEF tile.  For simplicity
 suppose that the mean point source detector location is at (308,494)
 on ACIS-7.  Then run :ciao:`mkrmf` using (continuing the shell script form above):
 
-.. literalinclude:: plaw_ciao.sh
-   :language: bash
-   :lines: 40-
+.. plot::
+    :include-source:
+    :context:
+    :nofigs:
+    :show-source-link: False
+
+    import os
+    # Mean chip position
+    chipx=221
+    chipy=532
+
+    fef=f"{os.environ['CALDB']}/data/chandra/acis/fef_pha/acisD2000-01-29fef_phaN0005.fits"
+
+    cxfilter=f"chipx_hi>={chipx},chipx_lo<={chipx}"
+    cyfilter=f"chipy_hi>={chipy},chipy_lo<={chipy}"
+    rt.mkrmf(infile=f"{fef}[ccd_id={ccdid},{cxfilter},{cyfilter}]",
+    outfile=rmffile, axis1=f"energy={engrid}",
+    axis2=phagrid, thresh=1e-8, clobber=True)
 
 Notice, how the FEF file is set explicitly to 
 ``fef="$CALDB/data/chandra/acis/cpf/fefs/acisD2000-01-29fef_phaN0005.fits"``
+(where we use Python to retrieve the ``$CALDB`` environment variable)
 and that the correct tile of that FEF file is chosen with 
 ``fef[ccd_id=7,chipx_hi>=221,chipx_lo<=221,chipy_hi>=532,chipy_lo<=532]``
 
@@ -174,36 +285,62 @@ Analyzing the simulated data
 -----------------------------
 
 The PHA, ARF, and RMF files may
-be used in a spectral modelling program such as `ISIS`_ to see whether or
+be used in a spectral modelling program such as `Sherpa`_ to see whether or
 not one can reach the desired science goal from the simulated
 observation.  For this example, the goal is to verify that the marx
-simulation is consistent with the input spectrum.  To this end, `ISIS`_
+simulation is consistent with the input spectrum.  To this end, `Sherpa`_
 will be used to fit an absorbed powerlaw to the pha spectrum.  The
 figure below showing the resulting fit was created via the following
-ISIS script:
+script:
 
-.. sourceinclude:: isisfit.sl
-   :indent: "isis> "
+.. plot::
+    :include-source:
+    :context:
+    :show-source-link: False
+    :nofigs:
 
+    ui.load_pha(phafile)
+    ui.load_rmf(rmffile)
+    ui.load_arf(arffile)
+    ui.group_counts(25)
+    ui.set_source(ui.xsphabs.a * ui.xspowerlaw.p)
+    a.nH = 0.001
+    p.PhoIndex = 1.8
+    p.norm = 0.1
+    ui.ignore(None, 0.4)
+    ui.ignore(10.0, None)
+    ui.fit()
 
-This script produced the following parameter values with a reduced
-chi-square of 1.2::
+This script produced the following parameter values with a an acceptable reduced
+chi-square ("rstat", the reduced value of the statistic, which in this case is a variant
+of the chi-square statistic):
 
-     Parameters[Variable] = 3[2]
-                Data bins = 600
-               Chi-square = 722.847
-       Reduced chi-square = 1.208774
-    phabs(1)*powerlaw(1)
-     idx  param             tie-to  freeze         value         min         max
-      1  phabs(1).nH            0     1                1           0      100000  10^22
-      2  powerlaw(1).norm       0     0      0.001003397           0       1e+10  
-      3  powerlaw(1).PhoIndex   0     0         1.826904          -2           9  
+.. plot::
+    :context:
+    :nofigs:
+    :show-source-link: False
+
+    with open("fit_results.txt", "w") as op:
+        op.write(str(ui.get_fit_results()))
+
+.. include:: fit_results.txt
+   :code:
+
 
 The ``rplot_counts`` may be used to produce a plot of the resulting
 fit.
 
-.. image:: plawfit.*
-   :alt: Plot of the spectrum
+.. plot::
+    :include-source:
+    :context:
+    :show-source-link: False
+    :alt: Plot of the spectrum
+
+    import matplotlib.pyplot as plt
+
+    ui.plot_fit_delchi(xlog=True, ylog=True)
+    plt.gcf().axes[0].set_title("Simulated spectrum and fit without pile-up")
+
 
 The residuals show that the model is systematically high for some
 energies.  The reason for this can be traced back to energy-dependent
@@ -227,8 +364,13 @@ Creating an event file with pile-up
 
 :marxtool:`marxpileup` can be run on the eventfile generated by |marx| using:
 
-.. literalinclude:: runmarxpileup.inc
-   :language: bash
+.. plot::
+    :include-source:
+    :context:
+    :nofigs:
+    :show-source-link: False
+
+    subprocess.call("marxpileup MarxOutputDir=plaw", shell=True)
 
 This will create a directory called ``plaw/pileup/`` and place the
 pileup results there.  It also writes a brief summary to the display
@@ -244,8 +386,13 @@ were lost.
 The next step is to run :marxtool:`marx2fits` to create a
 corresponding level-2 file called ``plaw_pileup_evt2.fits``.
 
-.. literalinclude:: runmarx2fitspileup.inc
-   :language: bash
+.. plot::
+    :include-source:
+    :context:
+    :nofigs:
+    :show-source-link: False
+
+    subprocess.call("marx2fits --pileup plaw/pileup plaw_pileup_evt2.fits", shell=True)
 
 Since this is a pileup simulation, the ``--pileup`` flag was passed
 to :marxtool:`marx2fits`.
@@ -254,140 +401,142 @@ In this case we can use the same ARF and RMF as above. However,
 it is necessary to create a new PHA file from the
 ``plaw_pileup_evt2.fits`` event file.  For analyzing a piled
 observation of a near on-axis point source, it is recommended that the
-extraction region have a radius of 4 ACIS tangent plane pixels.  A
-Bourne shell script that runs :ciao:`dmextract` to produce the PHA file
-``plaw_pileup_pha.fits`` is :download:`pileup_ciao.sh`.
+extraction region have a radius of 4 ACIS tangent plane pixels.
 
-Analyzing the simulated data
-----------------------------
+.. plot::
+    :include-source:
+    :context:
+    :nofigs:
+    :show-source-link: False
 
-As before, `ISIS`_ will be used to analyze the piled spectrum.
+    # Smaller radius this time
+    R=4.0
 
-.. include:: isispileup1.inc
+    evtfile="plaw_pileup_evt2.fits"
+    phafile="plaw_pileup_pha.fits"
+
+    rt.dmextract(infile=f"{evtfile}[sky=Circle({X},{Y},{R})][bin {phagrid}]",
+    outfile=phafile, clobber=True)
+
+Analyzing the pile-up simulated data
+------------------------------------
+
+As before, `Sherpa`_ will be used to analyze the piled spectrum.
+
+.. plot::
+    :include-source:
+    :context:
+    :show-source-link: False
+    :nofigs:
+
+    ui.load_pha("pileup", "plaw_pileup_pha.fits")
+    ui.load_rmf("pileup", rmffile)
+    ui.load_arf("pileup", arffile)
+    ui.group_counts("pileup", 25)
+    ui.set_source("pileup", ui.xsphabs.apileup * ui.xspowerlaw.pileup)
+    a.nH = 1
+    p.PhoIndex = 1.8
+    p.norm = 0.001
+    ui.ignore(None, 0.4)
+    ui.ignore(10.0, None)
+    ui.fit("pileup")
+
+The fit produces the following results:
+
+.. plot::
+    :context:
+    :nofigs:
+    :show-source-link: False
+
+    with open("fit_results.txt", "w") as op:
+        op.write(str(ui.get_fit_results()))
+
+.. include:: fit_results.txt
    :code:
 
-The fit produces a rather large chi-square per dof of more than 7.5::
-
-   Parameters[Variable] = 3[2]
-              Data bins = 659
-             Chi-square = 4946.838
-     Reduced chi-square = 7.529434
-  phabs(1)*powerlaw(1)
-   idx  param             tie-to  freeze         value         min         max
-    1  phabs(1).nH            0     1                1           0      100000  10^22
-    2  powerlaw(1).norm       0     0     0.0004742587           0       1e+10  
-    3  powerlaw(1).PhoIndex   0     0         1.593586          -2           9  
-
-Note also that the parameters are different
+Note that the parameters are different
 from the power-law parameters that went into the simulation.  For
-example, the normalization is less than half of what was expected, and the
+example, the normalization is less than what was expected, and the
 powerlaw index is somewhat low compared to the expected value of 1.8.
-In fact, the ``conf`` function shows that the 99 percent confidence
-interval on the powerlaw index is from 1.59 to 1.62.
+
 
 Suspecting that this observation suffers from pileup, we enable the
-`ISIS`_ pileup kernel, which introduces a few additional parameters:
+`Sherpa`_ pileup kernel, which introduces a few additional parameters:
 
-.. include:: isispileup2.inc
+.. plot::
+    :include-source:
+    :context:
+    :nofigs:
+    :show-source-link: False
+
+    ui.set_pileup_model("pileup", ui.jdpileup.jdp)
+
+which gives us the following model:
+
+.. plot::
+    :context:
+    :nofigs:
+    :show-source-link: False
+
+    my_src = ui.get_source()
+    with open("source_description2.txt", "w") as op:
+        op.write(str(my_src))
+
+.. include:: source_description2.txt
    :code:
 
-which gives::
-
-  phabs(1)*powerlaw(1)
-   idx  param             tie-to  freeze         value         min         max
-    1  phabs(1).nH            0     1                1           0      100000  10^22
-    2  powerlaw(1).norm       0     0     0.0004742587           0       1e+10  
-    3  powerlaw(1).PhoIndex   0     0         1.593586          -2           9  
-    4  pileup(1).nregions     0     1                1           1          10  
-    5  pileup(1).g0           0     1                1           0           1  
-    6  pileup(1).alpha        0     0              0.5           0           1  
-    7  pileup(1).psffrac      0     1             0.95           0           1  
 
 Given the fact that the PSF fraction varies with
 off-axis angle and spectral shape, we will allow it to vary during the
-fit:
+fit.
 
-.. include:: isispileup2b.inc
-   :code:
-
-As before, the ``fit_counts`` command may be used to compute the best
+As before, the ``fit`` command may be used to compute the best
 fit parameters.  However, the parameter space in the context of the
-pileup kernel is very complex with many local minima, even for a
-function as simple as an absorbed powerlaw.  For this reason it is
-strongly recommended that pileup fits be performed many times with
-different initial values for the parameters to better explore the
-parameter space.  The easiest way to do this in `ISIS`_ is to use the
-``fit_search`` function, which randomly samples the parameter space
-by choosing parameter values uniformly distributed between their
-minimum and maximum parameter values.  Before starting, let's set
-the powerlaw normalization's maximum value to something reasonable:
+pileup kernel can be complex with many local minima, even for a
+function as simple as an absorbed powerlaw.  For this reason it
+might be useful to start the fit multiple times from different
+starting points or use an ompimizer such as a Monte-Carlo algorithm
+to explore the parameter space more fully.:
 
-.. include:: isispileup3.inc
+.. plot::
+    :include-source:
+    :context: close-figs
+    :show-source-link: False
+
+    ui.fit("pileup")
+
+The above produces:
+
+ .. plot::
+    :context:
+    :nofigs:
+    :show-source-link: False
+
+    with open("fit_results2.txt", "w") as op:
+        op.write(str(ui.get_fit_results()))
+
+.. include:: fit_results2.txt
    :code:
-
-The above produces::
-
-  phabs(1)*powerlaw(1)
-   idx  param             tie-to  freeze         value         min         max
-    1  phabs(1).nH            0     1                1           0      100000  10^22
-    2  powerlaw(1).norm       0     0     0.0004742587           0        0.01  
-    3  powerlaw(1).PhoIndex   0     0         1.593586          -2           9  
-    4  pileup(1).nregions     0     1                1           1          10  
-    5  pileup(1).g0           0     1                1           0           1  
-    6  pileup(1).alpha        0     0              0.5           0           1  
-    7  pileup(1).psffrac      0     0             0.95           0           1  
-
-The next step is to use ``fit_search`` to perform the
-minimization.  Here we will explore the parameter space by having
-``fit_search`` run the ``fit_counts`` function at 100 randomly
-sampled locations.  It should be noted that `ISIS`_ will run a number of
-the fits in parallel by distributing the computations across the
-available CPU cores.
-
-.. include:: isispileup3b.inc
-   :code:
-
-This gives::
-
-   Parameters[Variable] = 7[4]
-              Data bins = 659
-             Chi-square = 751.8835
-     Reduced chi-square = 1.147914
-  phabs(1)*powerlaw(1)
-   idx  param             tie-to  freeze         value         min         max
-    1  phabs(1).nH            0     1                1           0      100000  10^22
-    2  powerlaw(1).norm       0     0     0.0007544917           0        0.01  
-    3  powerlaw(1).PhoIndex   0     0         1.790701          -2           9  
-    4  pileup(1).nregions     0     1                1           1          10  
-    5  pileup(1).g0           0     1                1           0           1  
-    6  pileup(1).alpha        0     0        0.4686956           0           1  
-    7  pileup(1).psffrac      0     0         0.775919           0           1  
 
 We see that the reduced chi-square is near what one would expect for a
 good fit and that the powerlaw index is very close to the expected
-value.  We can use the ``conf`` function to obtain its confidence
-interval:
+value.  We can use the ``ui.conf()`` function to obtain its confidence
+interval if we want to.
 
-.. include:: isispileup4.inc
-   :code:
 
-This indicates that the 90 percent confidence interval on the powerlaw
-index to be between 1.78 and 1.80.
+Here is a plot of the resulting fit:
 
-The powerlaw normalization may appears to be a bit lower than
-expected.  For a near on-axis point source, the 2 arc-second radius
-extraction region used contains roughly 90 percent of the flux. Hence
-the expected powerlaw normalization should be somewhere in the
-neighborhood of 0.0009.  However, it is much less constrained, as can
-be seen by computing its 90 percent confidence interval, which runs
-from from 0.006 to 0.003.
+.. plot::
+    :include-source:
+    :context:
+    :show-source-link: False
+    :alt: Plot of the pile-up spectrum. Model and data fit well now.
+    :caption: Plot of the pileup spectrum
 
-Here is a plot of the resulting fit, as produced by the
-``rplot_counts`` function:
-
-.. figure:: plawpileupfit.*
-   :align: center
-   :alt: Plot of the pile-up spectrum. Model and data fit well now.
-
-   Plot of the pileup spectrum
+    ui.plot_data(yerrorbars=False, color='C0', alpha=0.4, xlog=True, ylog=True)
+    ui.plot_data("pileup", yerrorbars=False, overplot=True,color='C1', alpha=0.4)
+    ui.plot_model(color='C0', overplot=True, label='data and model without pileup')
+    ui.plot_model("pileup", overplot=True, color="C1", label='data and model with pileup')
+    plt.legend()
+    plt.title("The effect of pile-up on the spectrum")
 
