@@ -59,43 +59,39 @@ pileup process can affect ACIS data in a number of ways including:
    standard data analysis which often begins by discarding such "bad"
    grades.
 
-.. figure:: ../../build_figures/schematic_pileup.*
-   :align: center
-   :scale: 60%
-   :alt: Two events (symbolized by red and blue bars in a bar chart) are stacked on top if each other.
 
-   A schematic representation of a  "piled"  event. In this simple
-   illustration, two events (red and blue) are detected in the same location within an
-   ACIS frametime. The pulse heights are
-   shown here in units of keV. Note that the magnitude of the  "piled"
-   distribution is essentially the sum of the two component 
-   distributions. Hence, instead of detecting two roughly 3 keV photons,
-   we would have detected a single 6 keV photon.
+.. plot:: indetail/schematic_pileup.py
+    :alt: Two events (symbolized by red and blue bars in a bar chart) are stacked on top if each other.
+
+    A schematic representation of a  "piled"  event. In this simple
+    illustration, two events (red and blue) are detected in the same location within an
+    ACIS frametime. The pulse heights are
+    shown here in units of keV. Note that the magnitude of the  "piled"
+    distribution is essentially the sum of the two component
+    distributions. Hence, instead of detecting two roughly 3 keV photons,
+    we would have detected a single 6 keV photon.
 
 
-.. figure:: ../../build_figures/evt_grid.*
-   :name: evtsplit
+.. plot:: indetail/evt_grid.py
    :alt: Schematic representation of a  "split"  event
-   :align: center
-   :scale: 60%
 
-   A schematic representation of a small portion (8x8 pixels
-   square) of a CCD in which two events have been detected.
-   The highest amplitude event (blue) is the pixel
-   of interest. Since the standard event-detection routine classifies
-   events in a 3x3 square pixel neighborhood, rates in all other pixels
-   marked in blue must also be considered. In addition, some events
-   two pixels away, like the red event, could pile via
-   splitting onto the event of interest. In this example, both events
-   deposit electrons in more than one pixel - the blue event in two pixels 
-   and the red event in three. The peak of the blue event has the highest signal 
-   and this would define the "center" of the 3x3 pixel island that is transmitted
-   to the ground. Clearly, the blue event would be assigned too much
-   charge, in this case. Thus, the rates in pixels marked in yellow
-   must be considered when assessing the pileup rate in the blue event (but
-   not all events in this border will actually pile with the blue event; the
-   actual number depends on the details of the branching ratios into each
-   grade).
+    A schematic representation of a small portion (8x8 pixels
+    square) of a CCD in which two events have been detected.
+    The highest amplitude event (blue) is the pixel
+    of interest. Since the standard event-detection routine classifies
+    events in a 3x3 square pixel neighborhood, rates in all other pixels
+    marked in blue must also be considered. In addition, some events
+    two pixels away, like the red event, could pile via
+    splitting onto the event of interest. In this example, both events
+    deposit electrons in more than one pixel - the blue event in two pixels
+    and the red event in three. The peak of the blue event has the highest signal
+    and this would define the "center" of the 3x3 pixel island that is transmitted
+    to the ground. Clearly, the blue event would be assigned too much
+    charge, in this case. Thus, the rates in pixels marked in yellow
+    must be considered when assessing the pileup rate in the blue event (but
+    not all events in this border will actually pile with the blue event; the
+    actual number depends on the details of the branching ratios into each
+    grade).
 
 
 Chandra observations of bright point sources are the most likely to be

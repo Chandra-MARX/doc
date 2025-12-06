@@ -1,14 +1,9 @@
 '''Generate schematic of a pile-up event
-
-use: python schematic_pileup.py figurename.png
 '''
-import sys
 import numpy as np
 
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D  # import required for projection='3d'
-
-from figurescripts import savefig
 
 event1 = np.array([[0.0, 0.0, 0.0],
                    [0.0, 1.4, 0.1],
@@ -23,13 +18,11 @@ xpos, ypos = np.meshgrid(xpos, ypos)
 xpos = xpos.flatten()
 ypos = ypos.flatten()
 
-
 z0 = np.zeros_like(event1).flatten()
 dx = np.ones_like(z0)
 dy = dx.copy()
 
 ind = event1.flatten() > 0
-
 
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
@@ -45,5 +38,3 @@ ax.set_xlabel('pixel')
 ax.set_ylabel('pixel')
 ax.set_title('Piled-up event')
 fig.subplots_adjust(0,0,1,1)
-
-savefig(fig, sys.argv[1])

@@ -6,10 +6,6 @@ SPHINXOPTS    =
 SPHINXBUILD   = sphinx-build
 PAPER         =
 BUILDDIR      = build
-BUILDFIGDIR   = build_figures
-
-# This is needed in a sub-make
-export BUILDFIGDIR
 
 # User-friendly check for sphinx-build
 ifeq ($(shell which $(SPHINXBUILD) >/dev/null 2>&1; echo $$?), 1)
@@ -56,12 +52,7 @@ help:
 
 clean:
 	rm -rf $(BUILDDIR)
-	rm -rf $(BUILDFIGDIR)
 	$(MAKE) -C source/examples distclean
-
-figures:
-	-mkdir $(BUILDFIGDIR)
-	$(MAKE) -C source/figures BUILDFIGDIR=$(abspath $(BUILDFIGDIR))
 
 examples:
 	$(MAKE) -C source/examples BUILDEXDIR=$(BUILDEXDIR)
