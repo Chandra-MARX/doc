@@ -18,6 +18,9 @@ from sphinx.directives.code import LiteralInclude
 from sphinx.directives.code import dedent_lines
 from sphinx.util.docfields import TypedField
 from sphinx.domains.std import GenericObject, StandardDomain
+from sphinx.util import logging
+
+logger = logging.getLogger(__name__)
 
 
 def indent_lines(lines, indent):
@@ -105,7 +108,7 @@ class MARXtool(ObjectDescription):
         return False
 
     def handle_signature(self, sig, signode):
-        match = re.search('(\w+)', sig)
+        match = re.search(r'(\w+)', sig)
         name = match.groups()[0]
         # At this point, we make no attempt to break up the arglist into
         # reqired parameters, keywords, optional arguments etc.
@@ -190,7 +193,7 @@ class Parameter(GenericObject):
                         if not row[0][0] == '#':
                             self.__class__.marxpar[row[0]] = (row[3], row[6])
             except IOError as e:
-                self.env.warn('config.py', 'marx.par could not be loaded - {0}'.format(str(e)))
+                logger.warning('config.py', 'marx.par could not be loaded - {0}'.format(str(e)))
 
     def before_content(self):
         # This is a little hacky way of modifying the content, but I did
@@ -246,7 +249,7 @@ class MARXParIndex(Index):
                         if not row[0][0] == '#':
                             self.marxpar[row[0]] = (row[3], row[6])
             except IOError as e:
-                self.domain.env.warn('config.py', 'marx.par could not be loaded - {0}'.format(str(e)))
+                logger.warning('config.py', 'marx.par could not be loaded - {0}'.format(str(e)))
 
 
     def generate(self, docnames=None):
@@ -269,7 +272,7 @@ class MARXParIndex(Index):
                 if p[1] in self.marxpar:
                     m = self.marxpar[p[1]]
                 else:
-                    self.domain.env.warn(docname, 'Marx parameter {0} encountered, but no equivalent parameter found in {1}'.format(p[1], self.domain.env.config['marxmarkup_marxparpath']))
+                    logger.warning(docname, 'Marx parameter {0} encountered, but no equivalent parameter found in {1}'.format(p[1], self.domain.env.config['marxmarkup_marxparpath']))
                     m = ('', '')
                 entries.append([p[1], 0, docname, anchor, m[1], 'default', m[0]])
         # sort alphabetically, without "key" upper and lower case would
@@ -289,7 +292,7 @@ class MARXParIndex(Index):
                 # parameters that are documented, but don't exist in the
                 # marx.par file are called out above one by one.
                 # Here, report parameters in marx.par that are undocumented.
-                self.domain.env.warn(str(self), 'The following parameters exist in {0}, but are not mentioned in the rst docs: {1}'.format(self.domain.env.config['marxmarkup_marxparpath'], missingpars))
+                logger.warning(str(self), 'The following parameters exist in {0}, but are not mentioned in the rst docs: {1}'.format(self.domain.env.config['marxmarkup_marxparpath'], missingpars))
 
         return content, False
 
