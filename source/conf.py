@@ -50,7 +50,10 @@ nb_execution_mode = "cache"
 nb_execution_timeout = 240 # seconds
 
 # For the occasional link to Python documentation
-intersphinx_mapping = {'python': ('https://docs.python.org/3', None)}
+intersphinx_mapping = {'python': ('https://docs.python.org/3', None),
+                       'sherpa': ('https://sherpa.readthedocs.io/en/latest/', None),
+                       'matplotlib': ('https://matplotlib.org/stable/', None),
+}
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']

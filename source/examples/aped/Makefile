@@ -27,5 +27,5 @@ apedflux.png: apedflux.tbl makeplots.sl
 clean:
 	/bin/rm -f *~
 distclean: clean
-	/bin/rm -f *.ps *.png *.fig aped_*.fits apedflux.tbl *.par aped.p
-	/bin/rm -rf aped autoeps
+	/bin/rm -f *.png *.fits apedflux.tbl meg1.rmg
+	/bin/rm -rf aped

@@ -30,3 +30,4 @@
 .. _SIMPUT code: http://www.sternwarte.uni-erlangen.de/research/sixte/simulation.php
 
 .. _Python interface to CIAO: https://cxc.cfa.harvard.edu/ciao/scripting/runtool.html
+.. _matplotlib: https://matplotlib.org/

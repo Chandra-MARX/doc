@@ -10,56 +10,114 @@ an HETG grating spectrum of a star whose spectrum is represented by an
 Creating the spectral file for |marx|
 -------------------------------------
 As in :ref:`sect-ex-ACISCCD`, we will use
-:marxtool:`marxflux` again to generate the spectral file from the
-parameter file describing the model.  But in this case, the plasma
-model must be created before `ISIS`_ can compute the model flux. So, the
-idea is to put the definition of the model into a file, which not only defines the model but also
-creates the parameter file that :marxtool:`marxflux` will load.
-The contents of file :download:`apedfun.sl` that defines the model is:
+`Sherpa`_ again to generate the spectral file from the
+parameter file describing the model. The procedure to define the model is very
+similar to the one used in :ref:`sect-ex-ACISCCD`, except that we will use
+a much finer energy grid for the model. Here is a model with two thermal components.
+Since we don't define an interstellar absorption for this example, there is a lot of
+flux at low energies.
 
-.. sourceinclude:: apedfun.sl
-   :prepend: # ISIS file defining spetral model
+.. plot::
+    :include-source:
+    :context: reset
+    :nofigs:
+    :show-source-link: False
 
-Then the :marxtool:`marxflux` script may be used to create the spectral file via::
+    from sherpa.astro import ui
 
-  marxflux --script apedfun.sl -l '[1:30:#16384]' aped.p apedflux.tbl
+    # set source properties
+    ui.set_source(ui.xsvapec.a1 + ui.xsvapec.a2)
+    a1.norm, a2.norm = 0.016, 0.0156
+    a1.kT, a2.kT = 8.5, 2.8  # in keV
+    a2.Ne = a1.Ne
+    a2.Fe = a1.Fe
+    a1.Ne = 2
+    a1.Fe = 0.2
 
-Here, the ``--script apedfun.sl`` arguments instruct :marxtool:`marxflux` to
-execute the ``apedfun.sl`` file.  The ``-l '[1:30:#16384]'``
-parameters indicate that a 16384 point wavelength grid running from
-1 to 30 angstroms is to be used for the spectrum - :marxtool:`marxflux` will
-convert this to energy units.  A plot of the spectrum in
-:download:`apedflux.tbl` is shown below.
+    my_src = ui.get_source()
 
-.. figure:: apedflux.*
-   :align: center
+Like in the previous example, we will arrange bins (this time in wavelength space)
+and write the tabulated model to a file. We will use a grid from 1 to 30 Angstrom
+with 16384 bins.
 
-   Plot of the spectrum
+.. plot::
+    :include-source:
+    :context:
+    :show-source-link: False
+
+    import numpy as np
+    from matplotlib import pyplot as plt
+
+    # set energy grid
+    wavelength = np.linspace(1., 30., 16384)  # in Angstrom
+    # convert to keV
+    energies = 12.39842 / wavelength  # keV
+    # for simplicity, reverse to be array ascending in energy
+    energies = energies[::-1]
+
+    # evaluate source on energy grid with lower and upper bin edges
+    flux = my_src(energies[:-1], energies[1:])
+
+    # MARX input files only have one energy column, and the conventions is that
+    # this hold the UPPER edge of the bin.
+    # Also, we need to divide the flux by the bin width to obtain the flux density.
+    bin_width = energies[1:] - energies[:-1]
+    ui.save_arrays("apedflux.tbl", [energies[1:], flux / bin_width],
+                ["keV","photons/s/cm**2/keV"], ascii=True, clobber=True)
+
+    midbin = 0.5 * (energies[:-1] + energies[1:])
+    plt.loglog(midbin, flux / bin_width)
+    plt.xlabel("Energy (keV)")
+    plt.ylabel("Flux (photons/s/cm$^2$/keV)")
 
 
-Running marx
-------------
+
+Running marx for the HETGS
+--------------------------
 
 The next step is to run |marx| in the desired configuration.  For this
-example, ACIS-S and the HETG are used:
+example, ACIS-S and the HETG are used. Here, we will wrap the |marx| call
+into a Python script. Since |marx| currently does not have a "nice" Python
+interface, we run it via :py:func:`subprocess.call`:
 
-.. literalinclude:: runmarx.inc
-   :language: bash
+.. plot::
+    :include-source:
+    :context:
+    :nofigs:
+    :show-source-link: False
+
+    import subprocess
+    out = subprocess.call('marx SourceFlux=-1 SpectrumType="FILE" ' + \
+             'SpectrumFile="apedflux.tbl" ExposureTime=80000 OutputDir=aped ' +\
+             'DitherModel="INTERNAL" ' +\
+             'GratingType="HETG" DetectorType="ACIS-S"', shell=True)
 
 This will run the simulation and place the results in a subdirectory
 called ``aped``.  The results may be converted to a standard Chandra
 level-2 fits file by the :marxtool:`marx2fits` program:
 
-.. literalinclude:: runmarx2fits.inc
-   :language: bash
+.. plot::
+    :include-source:
+    :context:
+    :nofigs:
+    :show-source-link: False
+
+    evtfile="aped_evt2.fits"
+    out = subprocess.call(f'marx2fits aped {evtfile}', shell=True)
 
 The resulting fits file ``aped_evt2.fits`` may be further processed
 with standard `CIAO`_ tools, as described below.  As some of these tools
 require the aspect history, the :marxtool:`marxasp` program will be used to
 create an aspect solution file that matches the simulation:
 
-.. literalinclude:: runmarxasp.inc
-   :language: bash
+.. plot::
+    :include-source:
+    :context:
+    :nofigs:
+    :show-source-link: False
+
+    asol1file="aped_asol1.fits"
+    out = subprocess.call(f'marxasp MarxDir="aped" OutputFile="{asol1file}"', shell=True)
 
 Creating a type-II PHA file
 ----------------------------
@@ -78,50 +136,71 @@ which is robust enough to work on heavily piled-up sources with read-out
 streaks. For this particular example, the
 position of the zeroth order in sky coordinates is (4017.88, 4141.43).
 
-The following Bourne shell script runs the above set of tools to
+We are using a `Python interface to CIAO`_ to run the CIAO tools to
 create a PHA2 file called ``aped_pha2.fits``:
 
-.. literalinclude:: aped_ciao.sh
-   :language: bash
+.. plot::
+    :include-source:
+    :context:
+    :nofigs:
+    :show-source-link: False
+
+    evt1afile = "aped_evt1a.fits"
+    reg1afile = "aped_reg1a.fits"
+    pha2file = "aped_pha2.fits"
+    srcfile = "src1a.fits"
+    asol1file="aped_asol1.fits"
+
+    rt.tgdetect(infile=evtfile, outfile="letgplaw_src1a.fits", clobber=True)
+
+    rt.tg_create_mask(infile=evtfile, outfile=reg1afile, input_pos_tab="letgplaw_src1a.fits",
+                    clobber=True)
+
+    rt.tg_resolve_events(infile=evtfile, outfile=evt1afile, regionfile=reg1afile,
+                        acaofffile=asol1file, clobber=True)
+
+    rt.tgextract(infile=evt1afile, outfile=pha2file, tg_order_list="-1,+1", tg_srcid_list=1,
+                clobber=True)
 
 An important by-product of this script is the ``evt1a`` file, which
 includes columns for the computed values of the wavelengths and orders
 of the diffracted events.  In fact, :ciao:`tgextract` makes use of
 those columns to create the PHA2.
 
-The resulting event file may be loaded into `ISIS`_ and displayed using
-::
+As usual, we again want to generate the response files. With the setting above,
+the PHA2 file contains four spectra, MEG and HEG, each with positive and negative
+orders.  Here, we will create the RMF and ARF for the MEG +1 order only. Note that
+we set the ``ardlibqual=";UNIFORM;bpmask=0"`` for the :marxtool:`fullgarf` call
+to get a uniform ARF without any bad pixel masking ans assuming a uniform quantum
+efficiency across the detector because those are the assumptions that |marx| makes
+in the simulation.
 
-   isis> load_data ("aped_pha2.fits");
-   isis> list_data;
+.. plot::
+    :include-source:
+    :context:
+    :nofigs:
+    :show-source-link: False
 
-with the result::
+    rt.mkgrmf(grating_arm="MEG", order=1, outfile="meg1.rmf", srcid=1, detsubsys="ACIS-S3", obsfile=evtfile,
+              regionfile=pha2file, clobber=True)
+    rt.fullgarf(phafile=pha2file, pharow=4, evtfile=evtfile, asol=asol1file, engrid="grid(meg1.rmf[cols ENERG_LO,ENERG_HI])",
+                ardlibqual=";UNIFORM;bpmask=0", clobber=True, verbose=0)
 
-    Current Spectrum List:
-     id    instrument part/m  src    use/nbins   A   R     totcts   exp(ksec)  target
-      1     HETG-ACIS  heg-1   1    8192/ 8192   -   -  1.3249e+04    78.988  POINT
-    file:  aped_pha2.fits
-      2     HETG-ACIS  heg+1   1    8192/ 8192   -   -  1.1891e+04    78.988  POINT
-    file:  aped_pha2.fits
-      3     HETG-ACIS  meg-1   1    8192/ 8192   -   -  2.6507e+04    78.988  POINT
-    file:  aped_pha2.fits
-      4     HETG-ACIS  meg+1   1    8192/ 8192   -   -  2.6388e+04    78.988  POINT
-    file:  aped_pha2.fits
+The resulting event file may be loaded into `Sherpa`_. Since the PHA2 file contains
+four spectra, Sherpa creates for datasets, labelled 1 to 4. The last one is the MEG +1
+spectrum, which we will plot here:
 
+.. plot::
+    :include-source:
+    :context: close-figs
+    :show-source-link: False
 
-A plot of the MEG-1 spectrum, which corresponds to ``id=3`` in the
-above list may be created using:
+    ui.load_pha(pha2file)
+    ui.load_rmf(4, "meg1.rmf")
+    ui.load_arf(4, "MEG_1_garf.fits")
+    ui.set_analysis(4, "wave")
+    ui.group_width(4, 2)
+    ui.notice_id(4, 4., 25.)
+    ui.plot_data(4, yerrorbars=False, linestyle='solid', marker=None)
 
-.. sourceinclude:: isismeg1.sl
-   :indent: "isis> "
-
-
-.. figure:: apedmeg1.*
-   :align: center
-
-   Plot of the MEG-1 counts spectrum
-
-In making the above plot, the ``group_data`` function was used to
-rebin the data by combining adjacent wavelength channels.
-
-
+Here, we used :py:func:`~sherpa.astro.ui.group_width` to group neighboring bins together.
