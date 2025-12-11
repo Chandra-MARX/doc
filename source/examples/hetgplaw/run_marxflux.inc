@@ -1,1 +1,0 @@
-marxflux -e '_A(exp([log(1.0):log(40.0):0.0003]))' plaw_hetg.par plawflux_hetg.tbl
