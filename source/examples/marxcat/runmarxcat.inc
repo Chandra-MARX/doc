@@ -1,1 +1,0 @@
-marxcat EQPegA EQPegB EQPeg_both

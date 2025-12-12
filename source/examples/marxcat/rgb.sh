@@ -1,1 +1,0 @@
-dmimg2jpg "EQPeg_both.fits[x=3700:4000][y=3500:3700][bin sky=1]" greenfile="" bluefile="" regionfile="region(EQPegB_reg1a.fits)" outfile="eqpeg_image.jpg" psfile="eqpeg_image.eps" clobber=yes scalefunction=log regioncolor=")colors.green" lut=")lut.heat"
