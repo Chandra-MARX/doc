@@ -2,7 +2,7 @@ ra_pnt = 85.368613
 dec_pnt = -70.12585
 roll_pnt = 116.86955
 
-dither_asol_chandra{ file = "1068/repro/pcadf051708271N003_asol1.fits", 
+dither_asol_chandra{ file = "1068/primary/pcadf01068_000N001_asol1.fits",
                      ra = ra_pnt, dec = dec_pnt, roll = roll_pnt }
 
 point{ position = { ra = 84.91093,

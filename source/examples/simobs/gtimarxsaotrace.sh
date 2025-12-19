@@ -1,1 +1,0 @@
-dmcopy "marx_saotrace.fits[@1068/repro/acisf01068_repro_evt2.fits[GTI4]]" marx_saotrace-filtered.fits
