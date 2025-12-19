@@ -7,7 +7,7 @@ The purpose of this example, contributed by Dan Dewey, is to show how to use
 |marx| to simulate an HETG observation of a point and a
 simple extended source with a user-specified spectrum. This example, like many
 of the other examples, uses |marx|, `Sherpa`_ and `CIAO`_, which should be
-installed on your system to run this example. 
+installed on your system to run this example.
 
 Create the spectral file
 ------------------------
@@ -228,7 +228,7 @@ visible. In both images the X-shape of the grating spectra can be seen. The
 spectra are much wider in the right image due to the source
 extension. Still, the grating extraction area that we will calculate below is large
 enough to capture most of the signal.
-   
+
 We can also use `ds9`_ to record the center of the
 disk (simulation 2) in X,Y coordinates (4096.5, 4096.5) for further processing.
 
@@ -272,11 +272,11 @@ significantly. Extraction of the HEG grating works in a similar way, see the
                 tg_srcid_list=1, outfile_type="pha_typeII", tg_part_list='header_value')
 
     for pharow, order in [(3, -1), (4, +1)]:
-        rt.mkgrmf(grating_arm="MEG", order=order, outfile=f"meg{order}_rmf.fits", srcid=1, detsubsys="ACIS-S3",
-            threshold=1e-06, obsfile=pha2file, regionfile=pha2file,
+        rt.mkgrmf(grating_arm="MEG", order=order, outfile=f"meg{order}_rmf.fits", srcid=1,
+            detsubsys="ACIS-S3", threshold=1e-06, obsfile=pha2file, regionfile=pha2file,
             wvgrid_arf="compute", wvgrid_chan="compute", clobber=True)
 
-        # fullgarf produces a lot of output. Let's capture that in a variable in case we want to inspect it later
+        # fullgarf produces a lot of output. Let's capture that in a variable in case we need it.
         out = rt.fullgarf(phafile=pha2file, pharow=pharow, evtfile=evtfile,
                 asol=asolfile, engrid=f"grid(meg{order}_rmf.fits[cols ENERG_LO,ENERG_HI])",
                 maskfile="NONE", dafile="NONE", dtffile="NONE", badpix="NONE",

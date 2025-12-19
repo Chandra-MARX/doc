@@ -210,11 +210,7 @@ photons, we can use::
         1.532549e+01             322
 
 In this example, the marx simulation directory was assumed to be named
-point. Alternatively, for IDL users, :marxtool:`read_marx_file` can be
-used to read these binary output vectors into internal IDL variables.
-These direct means of accessing the properties of detected photons can
-be much more efficient than reading individual columns from the
-equivalent FITS events file, especially for large simulations.
+point.
 
 
 

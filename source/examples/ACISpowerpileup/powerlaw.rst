@@ -214,15 +214,12 @@ continues the Python script from the last paragraph):
     ccdid=7
 
     detname=f"ACIS-{ccdid};UNIFORM;bpmask=0"
-    grating="NONE"
     # For ACIS-I, use engrid="0.3:11.0:0.003". This reflects a limitation of mkrmf.
     engrid="0.3:12.0:0.003"
 
-    rt.mkarf(mirror="hrma", detsubsys=detname, grating=grating,
-    outfile=arffile,
-    obsfile=evtfile, engrid=engrid, asphistfile=asphistfile,
-    sourcepixelx=X, sourcepixely=Y,
-    maskfile="NONE", pbkfile="NONE", dafile="NONE", clobber=True)
+    rt.mkarf.punlearn()
+    rt.mkarf(detsubsys=detname, outfile=arffile, obsfile=evtfile, engrid=engrid,
+             asphistfile=asphistfile, sourcepixelx=X, sourcepixely=Y, clobber=True)
 
 Notice the settings ``detsubsys="ACIS-7;uniform;bpmask=0"`` and ``maskfile=NONE
 pbkfile=NONE dafile=NONE`` that are different from the way a normal Chandra
@@ -268,9 +265,8 @@ on ACIS-7.  Then run :ciao:`mkrmf` using (continuing the shell script form above
 
     cxfilter=f"chipx_hi>={chipx},chipx_lo<={chipx}"
     cyfilter=f"chipy_hi>={chipy},chipy_lo<={chipy}"
-    rt.mkrmf(infile=f"{fef}[ccd_id={ccdid},{cxfilter},{cyfilter}]",
-    outfile=rmffile, axis1=f"energy={engrid}",
-    axis2=phagrid, thresh=1e-8, clobber=True)
+    rt.mkrmf(infile=f"{fef}[ccd_id={ccdid},{cxfilter},{cyfilter}]", outfile=rmffile,
+             axis1=f"energy={engrid}", axis2=phagrid, clobber=True)
 
 Notice, how the FEF file is set explicitly to 
 ``fef="$CALDB/data/chandra/acis/cpf/fefs/acisD2000-01-29fef_phaN0005.fits"``
@@ -354,7 +350,10 @@ Simulating pile-up in an ACIS CCD spectrum
 ==========================================
 
 The purpose of this example is to show how to to use the :marxtool:`marxpileup`
-program to simulate the effects of pileup. It is a post-processor that
+program to simulate the effects of pileup.
+:ref:`Pileup <pileup>` occurs when two or more photons land in the same pixel location in a given
+ACIS readout time.
+:marxtool:`marxpileup` is a post-processor that
 performs a frame-by-frame analysis of an existing |marx| simulation.
 We continue the example from above, where the spectrum had a
 somewhat large normalization to ensure that pileup would occur. 
@@ -524,7 +523,11 @@ value.  We can use the ``ui.conf()`` function to obtain its confidence
 interval if we want to.
 
 
-Here is a plot of the resulting fit:
+Here is a plot of the resulting fit. We use the `Sherpa`_ plotting function
+``ui.plot_data`` and pass several options to customize the plot. Options that
+are not processed by `Sherpa`_ itself are passed to `matplotlib`_ (e.g.
+`color='C0'` set the first color in the default color cycle in `matplotlib`_).
+
 
 .. plot::
     :include-source:
@@ -534,9 +537,16 @@ Here is a plot of the resulting fit:
     :caption: Plot of the pileup spectrum
 
     ui.plot_data(yerrorbars=False, color='C0', alpha=0.4, xlog=True, ylog=True)
-    ui.plot_data("pileup", yerrorbars=False, overplot=True,color='C1', alpha=0.4)
+    ui.plot_data("pileup", yerrorbars=False, overplot=True, color='C1', alpha=0.4)
     ui.plot_model(color='C0', overplot=True, label='data and model without pileup')
     ui.plot_model("pileup", overplot=True, color="C1", label='data and model with pileup')
     plt.legend()
     plt.title("The effect of pile-up on the spectrum")
 
+Comparing the spectrum simulated without pile-up and with pile-up
+shows how pile-up distorts the spectral shape.  Pile-up reduces the
+number of counts overall because some events are combined with other events
+such that they look like a cosmic ray or some other background noise that is
+removed by Chandra's grade filtering.
+Pile-up also hardens the spectrum because multiple low-energy photons
+are detected as single higher-energy events.

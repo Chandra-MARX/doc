@@ -7,7 +7,7 @@
  * but some (table background color, figures) require a direct editing 
  * of this css file. In order to keep everything in one place I have thus
  * modified the default.css from the sphinx theme directly, instead of just
- * inhertiting from it.
+ * inheriting from it.
  *
  * :copyright: Copyright 2014 Massachusettes Insititute of Technology
  * :license: MIT

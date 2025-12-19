@@ -4,14 +4,17 @@
 Examples of MARX in use
 ***********************
 
-This section contains examples of |marx| in use from rather trivial use cases to complex and demanding analysis scripts. Going through these examples is the best way to discover the power of |marx|. They also provide a great starting point for developing your own analysis.
+This section contains examples of |marx| in use from rather trivial use cases
+to complex and demanding analysis scripts. Going through these examples is the
+best way to discover the power of |marx|. They also provide a great starting point
+for developing your own analysis.
 
-All of the examples assume
-that you are working in a directory where you have write permission
+All examples assume that you are working in a directory where you have write permission
 and enough disk space for the simulation.  It is also assumed that the
 |marx| executables are on the search path and that the |marx| parameter
-files ``marx.par``, ``marxasp.par``, and 
-``marxpileup.par``) are located in the current directory.  Assuming you installed |marx| as described in :ref:`installing`, the
+files ``marx.par``, ``marxasp.par``, and ``marxpileup.par`` are located in the
+current directory or in the path of your ``PFILES`` environment variable.
+If you installed |marx| as described in :ref:`installing`, the
 latter requirement may be accomplished by running::
 
   unix% marx --help
@@ -26,13 +29,37 @@ Simply copy the files from the indicated directory to the current one::
 
 In most examples, |marx| is used together with a spectral analysis program to 
 write the input spectrum or to analyze the results. The most
-common programs are `Xspec`_, `Sherpa`_, and `ISIS`_. For each example, we pick
-one of those programs and provide instructions, but it should be easy to adapt
-the examples for other spectral analysis systems as well.
-(Note that in some installations it can happen that `CIAO`_ and `ISIS`_ have conflicts.  In these cases it is
-useful to setup `CIAO`_ only when needed and open a new terminal after
-that.)
+common programs are `Xspec`_, `Sherpa`_, and `ISIS`_. Our examples use
+`Sherpa`_, because it is typically installed when you install `CIAO`_.
+It should be easy to adapt the examples for other spectral analysis systems as well.
 
+We use Python as a scripting language and the
+`Python interface to CIAO <https://cxc.cfa.harvard.edu/ciao/scripting/runtool.html>`_
+to call `CIAO`_ tools. Even if you are not familiar with Python, it should not be
+difficult to convert the examples to shell scripts. For example::
+
+    rt.dmcopy(f"marx_saotrace.fits[@{evt2file}[GTI4]]", "marx_saotrace-filtered.fits", clobber=True)
+
+translates to a command line of::
+
+    unix% dmcopy "marx_saotrace.fits[@${evt2file}[GTI4]]" marx_saotrace-filtered.fits clobber=yes
+
+All examples could also be written as shell scripts, but we find Python convenient and
+it is automatically installed with `CIAO`_.
+
+|marx| currently does not have a nice Python interface, so to call |marx| we simply
+pass a string directly from Python to the shell, such as::
+
+    import subprocess
+    out = subprocess.call('marx SourceType="point" OutputDir="result"', shell=True)
+
+If we run |marx| multiple times in one example, we can use Python to parameterize that::
+
+    for i in range(5):
+        out = subprocess.call(f'marx MinEnergy={i} MaxEnergy={i+1} OutputDir="result_{i}"', shell=True)
+
+Still, it should not be difficult to convert these examples to shell scripts so that
+they can be pasted directly on the command line.
 
 .. toctree::
    :maxdepth: 1

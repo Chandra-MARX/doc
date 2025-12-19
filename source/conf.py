@@ -32,7 +32,7 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.todo',
     'sphinx.ext.mathjax',
-    'sphinx.ext.autosectionlabel',
+#    'sphinx.ext.autosectionlabel',
     'sphinx.ext.intersphinx',
     'matplotlib.sphinxext.plot_directive',
     'myst_nb',
@@ -42,12 +42,17 @@ extensions = [
 # True to prefix each section label with the name of the document it is in, followed by a colon.
 # For example, index:Introduction for a section called Introduction that appears in document
 # index.rst. Useful for avoiding ambiguity when the same section heading appears in different documents.
-autosectionlabel_prefix_document = False
+autosectionlabel_prefix_document = True
 
 # options for notebook rendering
 nb_execution_mode = "cache"
+nb_code_prompt_show = "Click to show code"
+nb_code_prompt_hide = "Click to hide code"
 # execution_in_temp=True
-nb_execution_timeout = 240 # seconds
+nb_execution_timeout = 3600 # seconds
+
+# Literal['show', 'remove', 'remove-warn', 'warn', 'error', 'severe']
+nb_output_stderr = 'remove'
 
 # For the occasional link to Python documentation
 intersphinx_mapping = {'python': ('https://docs.python.org/3', None),
@@ -71,16 +76,16 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'MARX'
-copyright = u'2002-2023, Massachusetts Institute of Technology'
+copyright = u'2002-2025, Massachusetts Institute of Technology'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
 # built documents.
 #
 # The short X.Y version.
-version = '5.5'
+version = '6.0'
 # The full version, including alpha/beta/rc tags.
-release = '5.5.3'
+release = '6.0.1'
 
 # This is needed for the marxmarkup module.
 # It reads the marx.par file to autogenerate a list of parameters and
@@ -356,7 +361,7 @@ html_sidebars = {'**': ['searchbox.html', 'localtoc.html', 'relations.html',
 # If true, an OpenSearch description file will be output, and all pages will
 # contain a <link> tag referring to it.  The value of this option must be the
 # base URL from which the finished HTML is served.
-html_use_opensearch = 'http://space.mit.edu/cxc/marx'
+html_use_opensearch = 'https://chandra-marx.github.io'
 
 # This is the file name suffix for HTML files (e.g. ".xhtml").
 #html_file_suffix = None

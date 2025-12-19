@@ -4,6 +4,42 @@
 Highlights for each version of |marx|
 *************************************
 
+Marx 6.0.1 (Dec 2025)
+=====================
+This is a minor release that fixes a bug in the previous 6.0.0 release and tightens
+a warning that catches common typos in the marx.par setup:
+
+- IMAGE sources were flipped on the sky in 6.0.0 compared to version 5.3.3
+  for some WCS orientations.
+- All sources with the exception of RAYFILE, SAOSAC, and SIMPUT now need
+  to specify SourceRA and SourceDec within 10 deg of the nominal pointing direction.
+  (Before: 180 deg).
+
+
+Marx 6.0.0 (Dec 2025)
+=====================
+This is a major release with non-backwards compatible changes and a number of
+bug fixes:
+
+- The "Verbose" parameter in ``marx.par`` is now an integer for more fine-grained verbosity control.
+- Fix a bug in a binary search algorithm that could lead to an off-by-one error
+  and cause a 1 pix shift between input images and simulated images.
+- No longer check for the RA/Dec set when using an IMAGE source, since the
+  coordinates are taken from the image WCS, not the marx parameters anyway.
+- When running with the "RAYFILE" source, include dither information and do not run
+  rays through the HRMA, grating, or detector, just generate the rays from the source.
+
+Most of the changes actually remove things that have been unused and deprecated for several years. In particular:
+
+- marx used to ship with IDL tools to extract grating spectra. This functionality has been part of CIAO for two decades and there is no need to separate tools as part of marx.
+- Remove binary tools such as ``marx2img`` - instead use CIAO tools such as ``dmcopy``.
+- Remove support for other observatories such as IXO that were modelled with marx in the proposal stage but never flown.
+- Remove the obsolete ""EA_MIRROR"" mirror model.
+- Remove support for some legacy platforms in the configuration scripts.
+
+This release also updates the CALDB files that are shipped with |marx|.
+
+
 Marx 5.5.3 (Dec 2023)
 =====================
 Version 5.5.3 is identical to the previous version 5.5.2 except to a small tweak in the installation scripts that help when compiling marx on Apple’s ARM chips. 

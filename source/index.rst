@@ -1,24 +1,26 @@
 Welcome to MARX's documentation!
 ================================
 
-.. admonition:: Current version of |marx| is |release|. 
+.. admonition:: Current version of |marx| is |release|
 
-   Version 5.5.3 is identical to the previous version 5.5.2
-   except to a small tweak in the installation scripts that help
-   when compiling marx on Apple's ARM chips.
-   See :ref:`installing` for installation instructions.
+   We now recommend to install |marx| together with CIAO as described in
+   https://cxc.cfa.harvard.edu/ciao/download/
+   Of course, it is still possible to install |marx| from
+   source as described in :ref:`installing`.
 
+.. warning::
+   Marx 6.0 improves error checking and user feedback in case of parameters errors
+   as well as some bug fixes. It is **not** fully backward compatible with version
+   5.x. In particular,
 
-.. warning:: 
-   
-   This is the last release of the |marx| 5.x series. In the next release, 
-   we will introduce a better treatment of ACIS grades and sub-pixel
-   positions. Also, we will remove a few tools that convert marx binary
-   results into other formats. Going forward, the only supported tool for
-   this purpose is :marxtool:`marx2fits`, followed by standard `CIAO`_
-   procedures to make images or extract spectra. We will remove all the IDL
-   tools shipped with |marx| (e.g. :marxtool:`make_image`) and  
-   :marxtool:`marx2dpde` and :marxtool:`marx2img`.
+   * The :par:`Verbose` parameter now requires an integer for finer control of
+     the verbosity level.
+   * We removed obsolete tools that convert marx binary
+     results into other formats. Going forward, the only supported tool for
+     this purpose is :marxtool:`marx2fits`, followed by standard `CIAO`_
+     procedures to make images or extract spectra.
+
+   See :ref:`highlights` for a full list of changes.
 
 
 |marx| is a suite of programs created and maintained by the

@@ -15,6 +15,10 @@ operating systems, as well as MacOSX and CYGWIN.
 The short-cut
 -------------
 
+.. note::
+
+    This is the easiest installation method and is recommended for most users.
+
 `CIAO`_ is now distributed as conda packages. |marx| is provided as one
 of those pre-complied binary packages. If you follow the
 `default instruction for the CIAO installation
@@ -24,9 +28,7 @@ marx is included in that install.
 
 The normal way
 --------------
-First download |marx| using either the ftp `distribution`_ or through 
-:download:`http <../_static/marx-dist-5.5.3.tar.gz>` 
-(depending on your network, download from http or ftp might work better)
+First download |marx| from https://github.com/Chandra-MARX/marx/releases
 and copy it to a directory that has at least a
 couple of hundred megabytes of free disk space.  Note that this
 directory and its contents will no longer be needed after |marx| has
@@ -34,18 +36,17 @@ been installed.
 
 Next uncompress and untar the file::
 
-    gzip -d marx-dist-5.5.3.tar.gz
-    tar xf marx-dist-5.5.3.tar
 
-(Some versions of tar can also uncompress the file, permitting the
-above to be accomplished in one step).  At this point the tar file is
+    tar -xzf marx-6.0.1.tar.gz
+
+(Some webbrowsers will automatically unzip a file when downloaded).  At this point the tar file is
 no longer needed so it may be removed::
 
-    rm marx-dist-5.5.3.tar
+    rm marx-6.0.1.tar.g
 
 Now change to the newly created directory to start the build process::
 
-    cd marx-5.5.3
+    cd marx-6.0.1
 
 The next step is to run the ``configure`` script, which will probe your
 system to see what tools are available for compiling |marx|.  Before
@@ -147,7 +148,7 @@ As indicated above, the |marx| executable will be copied to ``/opt/marx/marx-ver
 In addition, the |marx| installation contains some other tools described in
 :ref:`tools`.
 Binary executables for those tools are located in the same directory as |marx|
-itself. Tools that are written as scripts in python, ISIS or IDL can be found
+itself. Tools that are written as scripts in Python, ISIS or bash can be found
 in ``/opt/marx/marx-version/lib/marx/``.
 Both directories should be added to the user's ``PATH`` environment variable.
 For e.g. a tcsh shell user add the following line to your ``~/.cshrc`` file::

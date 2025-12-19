@@ -3,8 +3,8 @@
 The |marx| tool suite
 =====================
 
-In addition to :marxtool:`marx` itself, the installation comes with with a selection of post-processing tools
-that convert native |marx| binary output to other file formats.
+In addition to :marxtool:`marx` itself, the installation comes with a selection
+of post-processing tools.
 
 In this section, we describe the purpose and calling sequences for the
 various component tools in the |marx| suite. Detailed descriptions for individual tools follow
@@ -15,30 +15,19 @@ parameters. These parameters are specified with a double-dash, i.e.
 ``--chip``. Optional parameters are enclosed in ``[  ]``.
 
 
-
-
 ====================== =====================================================================
 Tool                   Description
 ====================== =====================================================================
-:marxtool:`marx2dpde`  Converts |marx| output to SAOSAC DPDE format
 :marxtool:`marx2fits`  Converts |marx| output to a FITS events list
-:marxtool:`marx2img`   Converts |marx| output to a FITS image
 :marxtool:`marxasp`    Creates an aspect solution file for the |marx| internal dither model
 :marxtool:`marxcat`    Concatenates the results of multiple |marx| simulations
 :marxtool:`marxrsp`    Folds a |marx| simulation through a FITS RMF file
-:marxtool:`marxpileup`    Simulates the effect of pileup in ACIS CCDs
+:marxtool:`marxpileup` Simulates the effect of pileup in ACIS CCDs
 ====================== =====================================================================
 
 There is also a set of small scripts and helper programs. Most of those are executable files, but some
-are written in a scripting language, such as IDL. 
-In order to use those users will need to configure their IDL environment so that
-these routines are included in the search path. The ``IDL_PATH``
-environment variable provides a convenient way to accomplish this
-configuration::
-
-    setenv IDL_PATH  ".:+/path/to/your/marx/installation/tools/idl"
-
-If a tool requires IDL or a similar environment, the individual tool will show the **language** 
+are written in a scripting language.
+If a tool requires S-Lang or a similar environment, the individual tool will show the **language**
 in the listing below.
 
 ========================== =====================================================================
@@ -49,16 +38,12 @@ Tool                       Description
 :marxtool:`dumpwfold`      Prints the contents of a WFOLD scattering file.
 :marxtool:`fitsdump`       Prints the contents of a FITS file to the standard output.
 :marxtool:`geff`           Calculates grating efficiency curves.
-:marxtool:`get_hetg_spect` Extract exact HETG spectra for a given simulation.
-:marxtool:`get_letg_spect` Extract exact LETG spectra for a given simulation.
-:marxtool:`make_image`     Make an image from simulation variables.
 :marxtool:`marxflux`       Convert an `ISIS`_ spectrum to a spectral input for |marx|
 :marxtool:`plist`          Prints out parameter files in a readable format.
 :marxtool:`pset`           Sets parameter values in a parameter file.
 :marxtool:`pwhich`         Prints the current search path for parameter files.
 :marxtool:`read_marx_file` Read MARX binary vectors into IDL variables.
 :marxtool:`rspdump`        Prints the contents of a FITS RMF file.
-:marxtool:`tg_extract`     Extract HETG/LETG spectra for a given simulation.
 :marxtool:`xspec2marx`     Convert XSPEC ASCII files to MARX format.
 ========================== =====================================================================
 
@@ -305,29 +290,6 @@ with no parameters on the call line.
        Unable to open file pointA/obs.par for reading.
        unix%
 
-.. marxpost:: marx2dpde  [ MARX-OUTPUT-DIR OUTPUT-FILE-NAME | -dump DPDE-FILE-NAME ]
-
-   Converts MARX output to SAOSAC DPDE format.
-
-   This2dpde tool converts the contents of a |marx| simulation output directory into a Mission 
-   Support Team DPDE format, SAOSAC compatible rayfile. 
-   Using marx2dpde, users can create rayfiles capable of being processed by the MST’s SAOSAC
-   raytrace model. The connections between SAOSAC and MARX are described in more detail
-   in :ref:`saosac`. Alternatively, the ``--dump`` option may be used with marx2dpde to print out the
-   contents of a DPDE file.
-
-   :param MARX-OUTPUT-DIR: Path to MARX simulation directory
-   :param OUPUT-FILE-NAME: Name of the DPDE file to create
-   :param DPDE-FILE-NAME: Name of the DPDE file to print
-
-   Example 1: Creating a DPDE format rayfile for further processing with SAOSAC::
-
-       unix% marx2dpde ./ngc1068 > ngc1068.dpde
-
-   Example 2: Dumping the contents of a binary DPDE format file to an ASCII file for examination::
-
-       unix% marx -dump AlShell1_B_focus.dpde > AlShell1_B_focus.out
-
 
 .. marxpost:: marx2fits [--help | --pileup | --pixadj=<OPTION> ] marx-dir fitsfile
 
@@ -377,127 +339,6 @@ with no parameters on the call line.
 
        unix% pileup MarxOutputDir="point" CCDID=7 FrameTime=3.3 > pileup.log
        unix% marx2fits --pileup point/CCD-7 point_3.3.fits
-
-.. marxpost:: marx2img [options] <MARXDIR> <FITSFILE>
-
-   Converts MARX output to FITS images.
-
-   .. note:: The use of this tool is deprecated. Instead, :marxtool:`marx2fits`
-      should be used to generate an event file, which can be converted into a
-      image using standard CIAO tools like :ciao:`dmcopy`. In this way, the
-      header information of the resulting images matches real Chandra data much better.
-
-   This tool converts the contents of a |marx| simulation output directory into a FITS
-   image. By default, marx2img will use all detected photons to create the FITS image. Alternatively, 
-   users may screen the events used in the image by a set of option flags. Events may
-   currently be screened on the basis of spatial position, photon energy, detector pulse height chan-
-   nel, or time. The ``--chip`` option may be used to generate an image of a single chip. Pixel coordinates
-   to marx2img are specified in "tiled detector" coordinates. Energy selections are specified in keV
-   while detector energies (minD,maxD) are given in channels. Finally, time selection is in seconds.
-   The ``--scale`` option will produce a FITS image with pixels binned by the indicated scale
-   factor. Due to the large pixel area of the HRC–I (16000x16000) and the HRC–S (48000x3200),
-   marx2img will by default use a scale factor of 8 when these detectors are selected. This default
-   behavior may be overridden by the ``--scale`` parameter.
-
-   :param MARXDIR: Path to MARX simulation directory
-   :param FITSFILE: Name of the FITS image file to create
-
-   Options include:
-
-   --bbox  Find bounding box.
-   --minX  <MIN_X_PIXEL>
-   --maxX  <MAX_X_PIXEL>
-   --minY  <MIN_Y_PIXEL>
-   --maxY  <MAX_Y_PIXEL>
-   --minE  <MIN_ENERGY> (KeV)
-   --maxE  <MAX_ENERGY> (KeV)
-   --minT  <MIN_TIME> (sec)
-   --maxT  <MAX_TIME> (sec)
-   --minD  <MIN_DETECTOR_ENERGY> (channel)
-   --maxD  <MAX_DETECTOR_ENERGY> (channel)
-   --chip  <CHIP_NUMBER>
-
-	    .. image:: chipmap.*
-	       :height: 250 px       
-	       :align: center
-
-   --scale  <PIXEL_SCALE_FACTOR>
-
-
-   Example 1: Creating a FITS image containing all detected photons for an ACIS–I simulation::
-
-       unix% marx2img ./clust clust_img.fits
-       DetectorType: ACIS-I
-       Pixel Size Scale Factor: 1
-       Num X Pixels: 1024 (per chip)
-       Num Y Pixels: 1024 (per chip)
-       First Chip Id: 0
-       Last Chip Id: 3
-       Min X Pixel: 3061
-       Max X Pixel: 5131
-       Min Y Pixel: 3061
-       Max Y Pixel: 5131
-       Estimated Image size: 17139600
-       73779 counts written to the fits file.
-       unix%
-
-   Example 2: Creating a FITS image of all events between 0.8 and 1.2 keV for an ACIS–I simulation::
-
-       unix% marx2img --minE 0.8 --maxE 1.2 clust clust_img_feL.fits
-       DetectorType: ACIS-I
-       Pixel Size Scale Factor: 1
-       Num X Pixels: 1024 (per chip)
-       Num Y Pixels: 1024 (per chip)
-       First Chip Id: 0
-       Last Chip Id: 3
-       Min X Pixel: 3061
-       Max X Pixel: 5131
-       Min Y Pixel: 3061
-       Max Y Pixel: 5131
-       Min Energy: 0.800000
-       Max Energy: 1.200000
-       Estimated Image size: 17139600
-       27851 counts written to the fits file.
-       unix%
-
-   Example 3: Creating a FITS image of the I3 frontside chip in the ACIS–I array::
-
-       unix% marx2img --chip 3 clust clust_img_i3.fits
-       DetectorType: ACIS-I
-       Pixel Size Scale Factor: 1
-       Num X Pixels: 1024 (per chip)
-       Num Y Pixels: 1024 (per chip)
-       First Chip Id: 3
-       Last Chip Id: 3
-       Min X Pixel: 4108
-       Max X Pixel: 5131
-       Min Y Pixel: 3061
-       Max Y Pixel: 4084
-       Estimated Image size: 4186116
-       33638 counts written to the fits file.
-       unix%
-
-   Example 4: Creating a FITS image of an HRC–S simulation::
-
-       unix% marx2img ./ngc5548
-       DetectorType: HRC-S
-       ngc5548.fits
-       ***Note: Pixel scale factor not specified. Since the detector is HRC,
-       a scale factor of 8 will be used. Set it to 1 via --scale for
-       full resolution
-       Pixel Size Scale Factor: 8
-       Num X Pixels: 512 (per chip)
-       Num Y Pixels: 2048 (per chip)
-       First Chip Id: 1
-       Last Chip Id: 3
-       Min X Pixel: 0
-       Max X Pixel: 511
-       Min Y Pixel: 0
-       Max Y Pixel: 6160
-       Estimated Image size: 12591040
-       93433 counts written to the fits file.
-       unix%
-
 
 
 .. marxpost:: marxrsp  [optional args] --rmf <rmf-file> --marx <marx-dir>
@@ -807,83 +648,6 @@ Other scripts and helper programs
 
     unix% geff meg.par 0.1 9.0 100 -1 1 > meg.dat
 
-.. marxtool:: get_hetg_spect ,path,order,rm,[xm,ym,rh,xh,yh,p,xp,yp]
-
-   Extract exact HETG spectra for a given simulation.
-
-   This routine uses a number of simulation variables
-   computed by |marx| to extract the specified HEG and MEG spectral order
-   for a given simulation. Optionally, the ACIS pulse height spectrum can
-   be returned as well.
-
-   :language: IDL
-   :param path: String containing path to simulation directory
-   :param order: Spectral order to extract
-   :param rm: Array of MEG photon dispersion distances [mm]
-   :param xm: Energy array for binned MEG photons [keV]
-   :param ym: Counts per pixel for the MEG spectrum [counts]
-   :param rh: Array of HEG photon dispersion distances [mm]
-   :param xh: Energy array for binned HEG photons [keV]
-   :param yh: Counts per pixel for the HEG spectrum [counts]
-   :param p: Array of photon pulse heights [pha]
-   :param xp: Energy array for binned PHA spectrum [keV]
-   :param yp: Counts per channel for the binned PHA spectrum [counts]
-
-   Example::
-
-    IDL> get_hetg_spect,'./ngc1399',1,rm,xm,ym,rh,xh,yh,p,xp,yp
-
-.. marxtool:: get_letg_spect ,path,order,rl,[xl,yl,p,xp,yp]
-
-   Extract exact LETG spectra for a given simulation.
-
-   This routine uses a number of simulation variables
-   computed by |marx| to extract the specified LETG spectral order for a
-   given simulation.
-
-   :language: IDL
-   :param path: String containing path to simulation directory
-   :param order: Spectral order to extract
-   :param rm: Array of LEG photon dispersion distances [mm]
-   :param xl: Energy array for binned LEG photons [keV]
-   :param yl: Counts per pixel for the LEG spectrum [counts]
-   :param p: Array of photon pulse heights [pha]
-   :param xp: Energy array for binned PHA spectrum [keV]
-   :param yp: Counts per channel for the binned PHA spectrum [counts]
-
-   Example::
-
-    IDL> get_letg_spect,'./ngc1399',1,rl,xl,yl,p,xp,yp
-
-.. marxtool:: make_image (vx, vy, XRANGE=[xmin,xmax],XAXIS=xax,YRANGE=[ymin,ymax], XBINSIZE=xbin, YBINSIZE=ybin, YAXIS=yax,INDEX_LIST=idx, REVERSE_INDICES=revidx)
-
-   Make an image from simulation variables.
-
-   This function returns the two dimensional histogram of two
-   variables. The two dimensional density function of the two variables, a
-   longword array of dimensions (MAX(v1)+1, MAX(v2)+1). Result(i,j) is
-   equal to the number of simultaneous occurrences of V1=i, and V2=j, at
-   the same element. This routine is useful for creating images from
-   |marx| position vectors.
-
-   :language: IDL
-   :param vx: Input X variable for density histogram
-   :param vy: Input Y variable for density histogram
-
-   :keyword XRANGE: [xmin,xmax] - Range in X input array to make into image
-   :keyword YRANGE: [ymin,ymax] - Range in Y input array to make into image
-   :keyword XBINSIZE: xbin - Binsize for image X
-   :keyword YBINSIZE: ybin - Binsize for image Y
-   :keyword XAXIS:  xax - Output X–coordinate vector; ``xax(i)`` is the **left edge** of bin ``i``
-   :keyword YAXIS: yax - Output Y–coordinate vector; ``yax(i)`` is the **left edge** of bin ``i``
-   :keyword INDEX_LIST: idx - Output vector of array indices of array elements used from vx, vy
-   :keyword REVERSE_INDICES: revidx - output reverse–index vector, but only of the sub–array actually specified by XRANGE, YRANGE
-
-   Examples::
-
-    IDL> ypos=read_marx_file('./ngc1399/ypos.dat')
-    IDL> zpos=read_marx_file('./ngc1399/zpos.dat')
-    IDL> im=make_image(ypos,zpos,XBINSIZE=0.024,YBINSIZE=0.024)
 
 .. marxtool:: marxflux [options] isis-par-file flux-file
 
@@ -1024,32 +788,6 @@ Other scripts and helper programs
        1.009253e-01    1       19          41     1.000000e+00
        1.013911e-01    1       19          41     9.999999e-01
        <...>
-
-.. marxtool:: tg_extract , hml, maxdist, y, z, y0, z0, dd, dxd, [list_selected]
-
-   Extract HETG/LETG spectra for a given simulation.
-   The ``tg_extract`` routine extracts all photons along the spectral dispersion axis within a specified
-   spatial window. It returns the dispersion distance for each photon. Unlike, get_hetg_spect and
-   get_letg_spect which use simulation variables to determine the exact spectrum for a given
-   order, ``tg_extract`` emulates a realistic analysis scenario using a spatial window.
-
-   :language: IDL
-   :param hml: String to specify which arm of the ’X’ to use for distance from dispersion line calculation.
-               Can be: ``'h'`` (for HEG) or ``'m'`` (for MEG) or ``'l'`` (for LEG)
-   :param maxdist: Maximum photon distance from dispersion line to allow [mm]
-   :param y: Array of Y axis photon positions in focal plane [mm]
-   :param z: Array of Z axis photon positions in focal plane [mm]
-   :param y0: Y coordinate of 0th order [mm]
-   :param z0: Z coordinate of 0th order [mm]
-   :param dd: Output vector of photon distances from zero order parallel to dispersion axis [mm]
-   :param dxd: Output vector of photon distances from dispersion line in perpendicular direction [mm]
-   :param list_selected: Optional output vector of indices within input vectors of selected photons
-
-   Examples::
-
-       IDL>ypos=read_marx_file(’./ngc1399/ypos.dat’)
-       IDL>zpos=read_marx_file(’./ngc1399/zpos.dat’)
-       IDL>tg_extract,’l’,0.25,y,z,0,0, dd, dxd
 
 
 .. marxtool:: xspec2marx inputfile > outputfile

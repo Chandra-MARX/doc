@@ -309,7 +309,7 @@ or shifted. The purpose of the IMAGE source is input shapes on the sky beyond th
 This could be the results of a hydrodynamic simulation, an observed image of an extended object at another
 wavelength, or some other complex shape.
 If orientation of the input image matters, the input image must be prepared in the correct orientation
-or one can use a :ref:`SIMPUT Source`.
+or one can use a :ref:`sect-simputsource`.
 
 .. parameter:: S-ImageFile
 
@@ -349,6 +349,7 @@ Rayfiles are produced by setting :par:`DumpToRayFile=yes`.
 .. index::
    pair: Source Model; SIMPUT
 
+.. _sect-simputsource:
 
 SIMPUT Source
 ^^^^^^^^^^^^^

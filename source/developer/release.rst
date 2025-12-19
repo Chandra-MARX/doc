@@ -23,23 +23,14 @@ Source repro
 
    Note separate copyright in ``jdmath/COPYRIGHT``.
 
-#) Update version string in e.g. the start-up message or |marx| or in the
-   comments in ``marx.par``. The best way to do this is properly to grep for
-   ``5.0.0`` (or whatever the previous version was called).
+#) Update version string in e.g. in the
+   comments in ``*.par`` (if backwards incompatible changes have been done) and update
+   ``MARX_VERSION`` and ``MARX_VERSION_STRING`` in ``marx.h``.
 #) Update NEWS files in the root directory.
 #) commit changes to git
 #) ``git tag v5.1.0``
 #) ``git push --tags reproname`` Push tag to all repositories that should have a copy.
-#) ``git archive --format=tar --prefix=marx-5.1.0/ v5.1.0 | gzip >
-   marx-dist-5.1.0.tar.gz``
-#) Sign with your private key: ``gpg --armor --detach-sig
-   marx-dist-5.1.0.tar.gz``
-#) Calculate hash, so that user can verify error-free download: ``sha1sum marx-dist-5.1.0* > sha1sums.txt``
-#) ``scp marx-dist-5.1.0.tar.gz space:/space/ftp/pub/cxc/marx/v5.1`` (make
-   directory as required)
-#) ``scp marx-dist-5.1.0.tar.gz.asc space:/space/ftp/pub/cxc/marx/v5.1``
-#) ``scp sha1sums.txt space:/space/ftp/pub/cxc/marx/v5.1``
-#) Provide tar file also via https: ``scp marx-dist-5.1.0.tar.gz space:/space/web/ASC/marx-5.1``
+#) Create a release on the github repository page for marx, using the tag created above.
 
 
 Documentation repro

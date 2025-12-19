@@ -145,6 +145,8 @@ create a PHA2 file called ``aped_pha2.fits``:
     :nofigs:
     :show-source-link: False
 
+    import ciao_contrib.runtool as rt
+
     evt1afile = "aped_evt1a.fits"
     reg1afile = "aped_reg1a.fits"
     pha2file = "aped_pha2.fits"
@@ -170,7 +172,7 @@ those columns to create the PHA2.
 As usual, we again want to generate the response files. With the setting above,
 the PHA2 file contains four spectra, MEG and HEG, each with positive and negative
 orders.  Here, we will create the RMF and ARF for the MEG +1 order only. Note that
-we set the ``ardlibqual=";UNIFORM;bpmask=0"`` for the :marxtool:`fullgarf` call
+we set the ``ardlibqual=";UNIFORM;bpmask=0"`` for the :ciao:`fullgarf` call
 to get a uniform ARF without any bad pixel masking ans assuming a uniform quantum
 efficiency across the detector because those are the assumptions that |marx| makes
 in the simulation.

@@ -32,7 +32,7 @@ need a large number of photons over a wide range of energies:
 
 .. plot::
     :include-source:
-    :context:
+    :context: reset
     :nofigs:
     :show-source-link: False
 
@@ -182,7 +182,7 @@ Analyzing the data simulated by marx
 The (type-II) PHA file, grating ARFs and RMFs can be produced using the
 standard `CIAO`_ tools using the simulated event file
 ``letgplaw_evt.fits`` and the aspect solution file
-``letgplaw_asol1.fits`` as inputs. Here is a Bourne shell script that does
+``letgplaw_asol1.fits`` as inputs. Here is a Python script that does
 this:
 
 .. plot::
