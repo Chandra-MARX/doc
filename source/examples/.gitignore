@@ -7,6 +7,7 @@
 *.eps
 *.jpg
 *.txt
+*.dat
 
 ACISpowerpileup/fit_search_*/
 ACISpowerpileup/plaw/
@@ -15,3 +16,4 @@ aped/aped/
 aped/apedflux.fig
 hetgplaw/hetg_plaw/
 hetgplaw/hetg_pldisk/
+

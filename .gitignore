@@ -12,3 +12,37 @@ build
 # MacOS preview images
 .DS_Store
 
+source/tests/*fits
+source/tests/*tbl
+source/tests/*par
+source/tests/*c
+source/tests/*so
+source/tests/*img
+source/tests/*arf
+source/tests/*rmf
+
+source/tests/1068
+source/tests/13182
+source/tests/15713
+source/tests/3552
+source/tests/4469
+source/tests/3662
+source/tests/3744
+source/tests/4496
+source/tests/7901
+
+
+source/tests/acisi
+source/tests/aciss
+source/tests/axisi
+source/tests/axiss
+source/tests/beta
+source/tests/line
+source/tests/image
+source/tests/disk*
+source/tests/gauss*
+source/tests/delta*
+source/tests/COUP*
+source/tests/marx*
+source/tests/saomarx*
+source/tests/*point*
