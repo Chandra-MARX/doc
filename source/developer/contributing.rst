@@ -15,11 +15,21 @@ includes the following repositories:
   The documentation is written using `Sphinx <http://www.sphinx-doc.org/>`_ and requires
   a number of packages to be build:
 
-  - python, sphinx, matplotlib, pygments: for text and figures
-  - |marx|, `CIAO`_, `ISIS`_, `Sherpa`_, and `SAOTrace`_ to run the examples and
-    generate the associated figures. (The documentation can be build without this, but it
-    will be missing all figures in the examples.)
+  - Python, sphinx, matplotlib.
+  - |marx|, `CIAO`_ (incl. the CALDB and the ACIS background files),
+    `Sherpa`_, and `SAOTrace`_ to run the examples and
+    generate the associated figures. The examples expect all |marx| binaries and
+    ``trace-nest`` (from `SAOTrace`_) to be in the system path. They also expect
+    the ``PFILES`` environment variable to point to the |marx| parameter files.
+  - Longer running tests are in the `tests/` subdirectory. These are written as
+    `Jupyter notebooks <https://jupyter.org/>`_ and additionally require
+    astropy, myst_nb (for chaching and building the notebooks with sphinx).
+    The notebooks also need |marx| and `SAOTrace`. If they are not on the system path,
+    they can be specified in a ``marx_examples.cfg`` files in the ``tests/`` directory.
+
     
-- https://github.com/Chandra-MARX/marx-test : Tests that either run a long time or have
-  extra dependencies beyond |marx| itself (e.g. `CIAO`_) are collected in this repository.
+- https://github.com/Chandra-MARX/marx-test : This repository focusses on CI-like tests
+  that have additional requirements beyond the basic |marx| build (if it only needs
+  |marx| and some shell script, it should to into |marx| itself).
+  For example, some tests need `CIAO`_, or additional Python packages.
   

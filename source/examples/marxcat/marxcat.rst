@@ -44,7 +44,8 @@ Stars are generally well described by an optically thin, collisionally excited p
     energies = np.arange(0.15, 12., bin_width)
 
     ### EQ Peg A ###
-    # check that out! Download and take number from real data.
+    # We could download and take number from the observed data,
+    # but that would make for a longer example.
     a1.norm = 0.001
     a1.kT = 0.95
     # evaluate source on energy grid
@@ -52,7 +53,7 @@ Stars are generally well described by an optically thin, collisionally excited p
 
     # Sherpa uses the convention that an energy array holds the LOWER end of the bins;
     # Marx that it holds the UPPER end of a bin.
-    # Thus, we need to shift energies and flux by one bin.
+    # Thus, we need to shift energies by one bin.
     # Also, we need to divide the flux by the bin width to obtain the flux density.
     ui.save_arrays("EQPegA_flux.tbl", [energies[1:], flux[:-1] / bin_width],
                    ["keV","photons/s/cm**2/keV"], ascii=True, clobber=True)
@@ -135,7 +136,7 @@ Analyzing the results
 ---------------------
 
 It is interesting to look at the event file with a viewer such as
-`ds9`_. The grating spectra of EQ Peg A and EQ Peg B are close to each other on
+`ds9`_ or make a plot. The grating spectra of EQ Peg A and EQ Peg B are close to each other on
 the detector, and we'll now test if the spectrum of EQ Peg A contaminates the
 spectrum of EQ Peg B.
 
@@ -194,7 +195,7 @@ We use `CIAO`_ to extract the grating spectrum from ``EQPegB.fits`` and
                       sA_zero_rad=0, sA_width_heg=0, sA_width_meg=0)
 
 
-    ### Extract EQ Peg B from the EQ PEg B - only simulation ###
+    ### Extract EQ Peg B from the "EQ Peg B only" simulation ###
 
     rt.tg_resolve_events(infile="EQPegB.fits", outfile="EQPegB_evt1a.fits",
                          regionfile="EQPegB_reg1a.fits", acaofffile="EQPeg_asol1.fits",
@@ -214,7 +215,7 @@ We use `CIAO`_ to extract the grating spectrum from ``EQPegB.fits`` and
 
     # make response matrices for the MEG +1 order
     # In practice, one would of course create arf and rmf files for all orders
-    # but for this example one is enough (to make it after to run the code).
+    # but for this example one is enough (to make it faster to run the code).
     # We are extracting the exact same region in both cases above for EXACTLY the same
     # observational parameters (aimpoint, exposure time, ...).
     # Thus the arf and rmf files will be identical, so we have to run this only once.
@@ -294,9 +295,6 @@ the background from the EQ Peg B spectrum?
     ui.subtract(4)
     ui.plot_data(4)
 
-Because the bright spectrum
-of EQ Peg A falls in the detector region where the background is measured,
-the background is overestimated and causes bins with negative fluxes here.
 We end up with a spectrum
 with a significant number of negative bins because the much brighter spectrum of EQ
 Peg A falls in the region where :ciao:`tgextract` extracts the background,

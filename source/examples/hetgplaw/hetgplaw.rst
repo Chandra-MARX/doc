@@ -6,14 +6,14 @@ HETG simulation of an extended source
 The purpose of this example, contributed by Dan Dewey, is to show how to use
 |marx| to simulate an HETG observation of a point and a
 simple extended source with a user-specified spectrum. This example, like many
-of the other examples, uses |marx|, `Sherpa`_ and `CIAO`_, which should be
+of the other examples, uses |marx|, `Sherpa`_, and `CIAO`_, which should be
 installed on your system to run this example.
 
 Create the spectral file
 ------------------------
 
 Use MARX to simulate an HETG observation of a powerlaw with two added lines
-(For example, this could be Fe and Ne fluorescence lines).
+(for example, this could be Fe and Ne fluorescence lines).
 We will use `Sherpa`_ to create a file with model fluxes.
 This is similar to :ref:`sect-ex-ACISCCD` except that the source is brighter
 and has a less steep powerlaw.
@@ -51,15 +51,15 @@ and has a less steep powerlaw.
     # evaluate source on energy grid with lower and upper bin edges
     flux = my_src(energies, energies + bin_width)
 
-    # MARX input files only have one energy column, and the conventions is that
-    # this hold the UPPER edge of the bin.
+    # MARX input files only have one energy column, and the convention is that
+    # this holds the UPPER edge of the bin.
     # Also, we need to divide the flux by the bin width to obtain the flux density.
     ui.save_arrays("source_flux.tbl", [energies + bin_width, flux / bin_width],
                    ["keV","photons/s/cm**2/keV"], ascii=True, clobber=True)
 
 
 Here a fine binning is used having bins with dE/E = 0.0003 (v_bin = 90 km/s).
-This gives a high resolution spectrum across the whole 1 to 40 A
+This gives a high resolution spectrum across the whole 1 to 40 Å
 (0.31 to 12.4 keV) range suitable for use with the HETG as well as, e.g.,
 future microcalorimeter instruments.
 
@@ -67,7 +67,7 @@ The file `source_flux.tbl` can now be used by |marx| to define the spectrum.
 
 Setup and run |marx|
 --------------------
-Roughly these steps are the same as for the previous examples, except that
+Roughly, these steps are the same as for the previous examples, except that
 the HETG is inserted by using :par:`GratingType="HETG"`.
 
 It can be convenient to use :marxtool:`pset` to set the parameters in a
@@ -82,7 +82,7 @@ Either way, the first simulation
 here is for a :ref:`sect-models-POINT`; it is followed by a few additional
 lines to do a second simulation with a :ref:`sect-models-DISK`.
 
-In the working directory paste these sets of lines to the unix prompt to run
+In the working directory paste these sets of lines to the Python prompt to run
 a first simulation using a point source:
 
 .. plot::
@@ -221,9 +221,8 @@ Alternatively, we can use a small Python script to create similar plots. Here we
 
 
 The simulation of the point source is shown on the left, the extended source
-on the right. The extended source has a much wider zeroth order, but the
-scaling of the image is chosen to bring out the faint features so this is
-hard to see. Above and below the zeroth order the read-out streak is
+on the right. The extended source has a much wider zeroth order.
+Above and below the zeroth order the read-out streak is
 visible. In both images the X-shape of the grating spectra can be seen. The
 spectra are much wider in the right image due to the source
 extension. Still, the grating extraction area that we will calculate below is large
@@ -287,7 +286,7 @@ significantly. Extraction of the HEG grating works in a similar way, see the
 
 Perform spectral analysis
 -------------------------
-As an examples of the spectra analysis, we will fit an absorbed powerlaw to the
+As an example of spectral analysis, we will fit an absorbed powerlaw to the
 point-like source spectrum. The spectral regions where the extra lines are
 located are ignored in the fit. Fitting the spectrum of the extended source
 works in the similar way. Naturally, a lot more analysis could be done on the
@@ -304,6 +303,11 @@ This is `Sherpa`_ code to fit an absorbed powerlaw to the simulated spectrum:
     :include-source:
     :context: close-figs
     :show-source-link: False
+
+    from sherpa.astro import ui
+    import matplotlib.pyplot as plt
+    import matplotlib as mpl
+    from matplotlib import ticker
 
     ui.load_pha(pha2file)
     ui.load_arf(3, 'MEG_-1_garf.fits')
@@ -336,8 +340,6 @@ This is `Sherpa`_ code to fit an absorbed powerlaw to the simulated spectrum:
     # That would give us only a single xlabel on this plot.
     # The following lines change the matplotlib settings for the formatting
     # of the x-axis to show more ticks.
-    import matplotlib as mpl
-    from matplotlib import ticker
     ax = plt.gca()
     mpl.rcParams['axes.formatter.min_exponent'] = 2
     ax.get_xaxis().set_minor_formatter(ticker.LogFormatterMathtext(labelOnlyBase=False,

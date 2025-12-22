@@ -15,7 +15,7 @@ In this section, we will discuss how to use the :marxtool:`marxpileup` tool in
 |marx| to simulate the effects on Chandra data of photon pileup in the
 ACIS CCDs. As a post-processing module, the :marxtool:`marxpileup` tool is designed to
 work with existing |marx| simulations. Users first create a simulation
-using marx :ref:`sect-runningmarx` and then, if necessary, run
+using marx as described in :ref:`sect-runningmarx` and then, if necessary, run
 pileup on the results of that simulation to study pileup effects. In
 this manner, users simulating faint or extended sources which are less
 susceptible to pileup can produce |marx| simulations more quickly. We
@@ -53,7 +53,7 @@ pileup process can affect ACIS data in a number of ways including:
 
 **Grade Migration**
    As the degree of pileup increases, the distribution of event grades
-   will change. Multiple photon or "piled" events will tend to have
+   will change. Multiple photons or "piled" events will tend to have
    "bad" grades which include detached corner pixels, such as ASCA
    grades 1,5, and 7. This migration will have repercussions for
    standard data analysis which often begins by discarding such "bad"

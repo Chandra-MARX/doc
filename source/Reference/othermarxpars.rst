@@ -54,15 +54,6 @@ Simulation control
    between the source and the front aperture of the HRMA in meters.
 
 
-.. parameter:: DetOffsetY
-
-   Offset in mm from the nominal on-axis, in-focus SIM position.
-
-   For simulating flight behavior, the user should note that
-   ``DetOffsetY=0`` always as Y axis translation of the flight
-   SIM is not permitted.
-
-
 Output Vectors
 ~~~~~~~~~~~~~~
 

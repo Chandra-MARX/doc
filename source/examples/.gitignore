@@ -14,6 +14,12 @@ ACISpowerpileup/plaw/
 LETGpow/letgplaw/
 aped/aped/
 aped/apedflux.fig
+aped/meg1*
 hetgplaw/hetg_plaw/
 hetgplaw/hetg_pldisk/
 
+background/blank_sky*
+simobs/obs1068*
+simobs/1068/
+simobs/input_spec_saotrace.rdb
+simobs/psf90.reg

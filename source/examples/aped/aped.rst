@@ -52,14 +52,14 @@ with 16384 bins.
     wavelength = np.linspace(1., 30., 16384)  # in Angstrom
     # convert to keV
     energies = 12.39842 / wavelength  # keV
-    # for simplicity, reverse to be array ascending in energy
+    # for simplicity, reverse to have array ascending in energy
     energies = energies[::-1]
 
     # evaluate source on energy grid with lower and upper bin edges
     flux = my_src(energies[:-1], energies[1:])
 
-    # MARX input files only have one energy column, and the conventions is that
-    # this hold the UPPER edge of the bin.
+    # MARX input files only have one energy column, and the convention is that
+    # this holds the UPPER edge of the bin.
     # Also, we need to divide the flux by the bin width to obtain the flux density.
     bin_width = energies[1:] - energies[:-1]
     ui.save_arrays("apedflux.tbl", [energies[1:], flux / bin_width],
@@ -128,13 +128,12 @@ extraction region mask file must be created using
 :ciao:`tg_resolve_events`.  The first step is to determine the
 source position, which is used by
 :ciao:`tg_create_mask`.  There are many ways to do this; the easiest might be
-to open the event file in `ds9`_, put a circles on the source
-position and use the ds9 functions to center it. Another way would be to use
+to open the event file in `ds9`_, put a circle on the source
+position and use the ds9 functions to center it. In this example use
 the *find zero-order* algorithm of
 `findzo <http://space.mit.edu/cxc/analysis/findzo/>`_ , 
 which is robust enough to work on heavily piled-up sources with read-out
-streaks. For this particular example, the
-position of the zeroth order in sky coordinates is (4017.88, 4141.43).
+streaks, which is implemented in :ciao:`tgdetect`.
 
 We are using a `Python interface to CIAO`_ to run the CIAO tools to
 create a PHA2 file called ``aped_pha2.fits``:
@@ -173,7 +172,7 @@ As usual, we again want to generate the response files. With the setting above,
 the PHA2 file contains four spectra, MEG and HEG, each with positive and negative
 orders.  Here, we will create the RMF and ARF for the MEG +1 order only. Note that
 we set the ``ardlibqual=";UNIFORM;bpmask=0"`` for the :ciao:`fullgarf` call
-to get a uniform ARF without any bad pixel masking ans assuming a uniform quantum
+to get a uniform ARF without any bad pixel masking and assuming a uniform quantum
 efficiency across the detector because those are the assumptions that |marx| makes
 in the simulation.
 

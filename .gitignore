@@ -46,3 +46,8 @@ source/tests/COUP*
 source/tests/marx*
 source/tests/saomarx*
 source/tests/*point*
+source/tests/user*
+source/tests/*lua
+source/tests/*rdb
+source/tests/obs.asp
+source/tests/psf.map

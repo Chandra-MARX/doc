@@ -152,7 +152,7 @@ In addition to its internal dither calculation mode, |marx| can
 generate simulations using aspect solution files created by the CXCDS
 aspect pipeline. For each observation, the CXCDS produces an aspect
 solution giving the Chandra pointing as a function of time. These files
-are FITS binary tables of the format described in in the table below
+are FITS binary tables of the format described in the table below
 (CXC ASPSOL ICD, Rev 2.4). The ASPSOL (or PCAD) files for a given
 Chandra observation can be retrieved from the CXC Archive. 
 Set :par:`DitherModel=FILE` and the file to

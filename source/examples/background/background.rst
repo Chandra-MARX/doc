@@ -3,7 +3,7 @@
 Including background in a |marx| simulation
 ===========================================
 
-The data from all Chandra observations includes different background
+Chandra observations include different background
 components: Astrophysical background (e.g. unresolved sources), instrumental
 background (e.g. high-energy particles from the sun), and a read-out artifact.
 The `Proposers Observatory Guide
@@ -32,11 +32,11 @@ particles, both methods need to make approximations:
      be used for a statistical analysis if the total number of background photons
      approaches the number of photons in the file.
 
-#. We extract fit the apparent spectrum of the "blank sky" files ("apparent"
+#. We extract and fit the apparent spectrum of the "blank sky" files ("apparent"
    because the events look like X-ray photons on the CCD, but in reality many are electron
    or proton impacts) and then use |marx| to simulate an extended source that
    produces a similar spectrum (:ref:`subsect-ex-bkg-marxbkg`). This approach is
-   easier and faster, but it does  not  all details of the `spatial
+   easier and faster, but it does not include all `spatial
    variations of the background 
    <http://cxc.harvard.edu/cal/Acis/Cal_prods/bkgrnd/nonuniformity/acisbg.html>`_.
 
@@ -114,7 +114,7 @@ column) as a function of energy [keV] (first column).
 
     # Sherpa uses the convention that an energy array holds the LOWER end of the bins;
     # Marx that it holds the UPPER end of a bin.
-    # Thus, we need to shift energies and flux by one bin.
+    # Thus, we need to shift energies by one bin.
     # Also, we need to divide the flux by the bin width to obtain the flux density.
     ui.save_arrays("source_flux.tbl", [energies[1:], flux[:-1] / bin_width],
                    ["keV","photons/s/cm**2/keV"], ascii=True, clobber=True)
@@ -155,7 +155,6 @@ completed, a standard Chandra event file may be created using the
     :nofigs:
     :show-source-link: False
 
-    import subprocess
     out = subprocess.call('marx2fits diffuse diffuse_evt2.fits', shell=True)
 
 We also generate an aspect solution file that matches the simulation:
@@ -166,7 +165,6 @@ We also generate an aspect solution file that matches the simulation:
     :nofigs:
     :show-source-link: False
 
-    import subprocess
     out = subprocess.call('marxasp MarxDir="diffuse" OutputFile="diffuse_asol1.fits"', shell=True)
 
 .. _subsect-ex-bkg-blanksky:
@@ -258,6 +256,10 @@ Here is the script that we use:
 If the source in the simulation covers multiple ACIS chips, then this
 has to be repeated chip-by-chip. 
 
+Now, we make a figure to show the |marx| simulation alone, with added
+background from the "blank sky" file, and with an energy filter that we would
+probably use for real data to suppress the background.
+
 .. _fig-ex-bkg:
 
 .. plot::
@@ -310,7 +312,7 @@ how important it is to consider the instrumental background when simulating weak
 
 Simulating a background-like source with |marx|
 -----------------------------------------------
-An alternative approach is to extract a spectrum from the "black-sky" fields 
+An alternative approach is to extract a spectrum from the "blank-sky" fields
 and use this spectrum as input for |marx|. This spectrum does **not**
 describe the real *physical properties* such as the energy of the background events 
 (many of them are not even photons), it just provides an effective way
@@ -332,17 +334,17 @@ http://cxc.harvard.edu/ciao/threads/extended/ ):
     :show-source-link: False
 
     rt.dmextract(infile=f"acis7s_bkg_reproj.fits[sky=rotbox(1:59:59,+39:59:20,3.2',3.5',0)][bin pi]",
-             outfile='blank_sky.pi', wmap="[bin tdet=8]", clobber=True)
+            outfile='blank_sky.pi', wmap="[bin tdet=8]", clobber=True)
     rt.asphist(infile="diffuse_asol1.fits", outfile="blank_sky.asphist",
-           evtfile="diffuse_evt2.fits[ccd_id=7]", clobber=True)
+            evtfile="diffuse_evt2.fits[ccd_id=7]", clobber=True)
     rt.sky2tdet(infile="acis7s_bkg_reproj.fits[sky=rotbox(1:59:59,+39:59:20,3.2',3.5',0)][bin sky=8]",
             asphistfile="blank_sky.asphist",
             outfile="blank_sky_tdet.fits[wmap]", clobber=True)
     rt.mkwarf(infile="blank_sky_tdet.fits[wmap]", outfile='blank_sky.arf',
-           weightfile='blank_sky.wfef', egridspec="0.3:11.0:0.1",
-          mskfile=None, spectrumfile=None, pbkfile=None, clobber=True)
+            weightfile='blank_sky.wfef', egridspec="0.3:11.0:0.1",
+            mskfile=None, spectrumfile=None, pbkfile=None, clobber=True)
     rt.mkrmf(infile="CALDB", outfile="blank_sky.rmf",
-          axis1="energy=0:1", axis2="pi=1:1024:1", weights="blank_sky.wfef", clobber=True)
+            axis1="energy=0:1", axis2="pi=1:1024:1", weights="blank_sky.wfef", clobber=True)
 
 
 We use `Sherpa`_ to display the spectrum on the screen and save it in a table
@@ -355,6 +357,8 @@ of the input spectrum format for |marx|):
     :show-source-link: False
     :alt: Mostly flat spectrum, rising at large energies. There are a few emission features on top of the spectrum.
     :caption: Spectrum of the "blank-sky" background.
+
+    from sherpa.astro import ui
 
     ui.load_data('blank_sky.pi')
     ui.load_rmf('blank_sky.rmf')
@@ -415,7 +419,7 @@ same as in the simulation of the astrophysical source of interest above.
     out = subprocess.call('marx SourceFlux=3. SpectrumType="FILE" SpectrumFile="bkgspec.tbl" ' + \
        'ExposureTime=0 NumRays=-30000 TStart=2012.5 OutputDir=bkg ' + \
        'DetectorType="ACIS-S" DitherModel="INTERNAL" RA_Nom=30 Dec_Nom=40 ' + \
-       'Roll_Nom=0 SourceRA=30 SourceDEC=40 ' + \
+       'Roll_Nom=0 SourceRA=30 SourceDEC=40 GratingType="NONE" ' + \
        'SourceType="IMAGE" S-ImageFile="chip-shape.fits"', shell=True)
 
 

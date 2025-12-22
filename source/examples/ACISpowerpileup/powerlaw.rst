@@ -4,13 +4,11 @@ Simulating a user-defined CCD spectrum with ACIS
 =================================================
 The purpose of this example is to show how to use |marx| to simulate an ACIS
 observation of a point source with a user-specified spectrum.  For
-simplicity, suppose that we wish to simulate a 3000 ksec observation of
+simplicity, suppose that we wish to simulate a 100 ksec observation of
 an on-axis point source whose spectrum is represented by an absorbed powerlaw,
 with a spectral index of 1.8, and a column density of :math:`10^{22}` atoms/cm^2.
 The normalization of the powerlaw will be set to 0.001
-photons/keV/cm^2/s at 1 keV.  The large exposure time was chosen to
-illustrate the consistency of the |marx| ray trace with that of the
-underlying calibration data.  
+photons/keV/cm^2/s at 1 keV.
 
 Creating the spectral file
 --------------------------
@@ -19,7 +17,7 @@ The first step is to create a 2-column text file that tabulates
 the flux [photons/sec/keV/cm^2] (second column) as a
 function of energy [keV] (first column).  The easiest way to create
 such a file is to make use of a spectral modeling program such as `ISIS`_,
-`Sherpa`_ or `XSpec`_.   The rest of this tutorial is given in the context of
+`Sherpa`_ or `XSpec`_.  The rest of this tutorial is given in the context of
 `Sherpa`_.
 
 In `Sherpa`_ the absorbed powerlaw model is specified using:
@@ -41,7 +39,7 @@ In `Sherpa`_ the absorbed powerlaw model is specified using:
     my_src = ui.get_source()
     print(str(my_src))
 
-The model parameters lists by `Sherpa`_ should look like this:
+The model parameters listed by `Sherpa`_ should look like this:
 
 .. plot::
     :context:
@@ -56,7 +54,7 @@ The model parameters lists by `Sherpa`_ should look like this:
    :code:
 
 
-The next step is to convert the parameter file ``plaw.p`` to the
+The next step is to convert the model to the
 spectrum file that |marx| expects. We can use the commands below (see also the `Sherpa`_ thread
 http://cxc.harvard.edu/sherpa/threads/marx/ for another example):
 
@@ -74,8 +72,8 @@ http://cxc.harvard.edu/sherpa/threads/marx/ for another example):
     # evaluate source on energy grid with lower and upper bin edges
     flux = my_src(energies, energies + bin_width)
 
-    # MARX input files only have one energy column, and the conventions is that
-    # this hold the UPPER edge of the bin.
+    # MARX input files only have one energy column, and the convention is that
+    # this holds the UPPER edge of the bin.
     # Also, we need to divide the flux by the bin width to obtain the flux density.
     ui.save_arrays("plawflux.tbl", [energies + bin_width, flux / bin_width],
                 ["keV","photons/s/cm**2/keV"], ascii=True, clobber=True)
@@ -105,7 +103,8 @@ The next step is to run |marx| in the desired configuration.  Some
 prefer to use tools such as :marxtool:`pset` to update the ``marx.par``
 file and then run |marx| or to pass the arguments via the command line
 in a shell. Here, we will wrap the |marx| call into a Python script. Since
-|marx| currently does not have a "nice" Python interface, we run it via
+|marx| currently does not have a "nice" Python interface, we pass the exact
+string we would use on the command line to the shell using
 :py:func:`subprocess.call`:
 
 .. plot::
@@ -134,10 +133,17 @@ level-2 fits file by the :marxtool:`marx2fits` program:
 
     subprocess.call("marx2fits plaw plaw_evt2.fits", shell=True)
 
+Again, one could just paste the string on the command line instead of using
+Python to get the same result::
+
+    unix% marx2fits plaw plaw_evt2.fits
+
+
 The resulting fits file ``plaw_evt2.fits`` may be further processed
 with standard `CIAO`_ tools.  As some of these tools require the aspect
 history, the :marxtool:`marxasp` program will be used to create an aspect
-solution file that matches the simulation:
+solution file that matches the simulation (and, of course, this could also
+be done on the command line instead):
 
 .. plot::
     :include-source:
@@ -248,7 +254,7 @@ may be used for this purpose.  The ``CCD_ID`` and the mean chip
 coordinates are important for the creation of the filter that will be
 passed to :ciao:`mkrmf` to select the appropriate FEF tile.  For simplicity
 suppose that the mean point source detector location is at (308,494)
-on ACIS-7.  Then run :ciao:`mkrmf` using (continuing the shell script form above):
+on ACIS-7.  Then run :ciao:`mkrmf` using (continuing the script from above):
 
 .. plot::
     :include-source:
@@ -295,6 +301,7 @@ script:
     :show-source-link: False
     :nofigs:
 
+    from sherpa.astro import ui
     ui.load_pha(phafile)
     ui.load_rmf(rmffile)
     ui.load_arf(arffile)
@@ -342,14 +349,14 @@ The residuals show that the model is systematically high for some
 energies.  The reason for this can be traced back to energy-dependent
 scattering where photons are scattered outside the extraction region.
 The CIAO effective area does not include this loss factor, and as a
-result, this omission appears in the residuals.  This effect is
-apparant because of the enormous number of counts in this simulation.
+result, this omission appears in the residuals.  This effect could be seen
+better if we run the simulation 10 or 100 times longer.
 
 
 Simulating pile-up in an ACIS CCD spectrum
 ==========================================
 
-The purpose of this example is to show how to to use the :marxtool:`marxpileup`
+The purpose of this example is to show how to use the :marxtool:`marxpileup`
 program to simulate the effects of pileup.
 :ref:`Pileup <pileup>` occurs when two or more photons land in the same pixel location in a given
 ACIS readout time.
@@ -489,13 +496,14 @@ Given the fact that the PSF fraction varies with
 off-axis angle and spectral shape, we will allow it to vary during the
 fit.
 
-As before, the ``fit`` command may be used to compute the best
+As before, the :py:func:`sherpa.astro.ui.fit` command may be used to compute the best
 fit parameters.  However, the parameter space in the context of the
 pileup kernel can be complex with many local minima, even for a
 function as simple as an absorbed powerlaw.  For this reason it
 might be useful to start the fit multiple times from different
-starting points or use an ompimizer such as a Monte-Carlo algorithm
-to explore the parameter space more fully.:
+starting points or use an optimizer such as a Monte-Carlo algorithm
+to explore the parameter space more fully, but here we begin with the
+fastest method, using the default optimizer.
 
 .. plot::
     :include-source:
@@ -519,14 +527,14 @@ The above produces:
 
 We see that the reduced chi-square is near what one would expect for a
 good fit and that the powerlaw index is very close to the expected
-value.  We can use the ``ui.conf()`` function to obtain its confidence
+value.  We can use the :py:func:`sherpa.astro.ui.conf` function to obtain its confidence
 interval if we want to.
 
 
 Here is a plot of the resulting fit. We use the `Sherpa`_ plotting function
-``ui.plot_data`` and pass several options to customize the plot. Options that
+:py:func:`sherpa.astro.ui.plot_data` and pass several options to customize the plot. Options that
 are not processed by `Sherpa`_ itself are passed to `matplotlib`_ (e.g.
-`color='C0'` set the first color in the default color cycle in `matplotlib`_).
+``color='C0'`` sets the first color in the default color cycle in `matplotlib`_).
 
 
 .. plot::
@@ -534,7 +542,7 @@ are not processed by `Sherpa`_ itself are passed to `matplotlib`_ (e.g.
     :context:
     :show-source-link: False
     :alt: Plot of the pile-up spectrum. Model and data fit well now.
-    :caption: Plot of the pileup spectrum
+    :caption: Plot of the original and the piled-up spectrum
 
     ui.plot_data(yerrorbars=False, color='C0', alpha=0.4, xlog=True, ylog=True)
     ui.plot_data("pileup", yerrorbars=False, overplot=True, color='C1', alpha=0.4)

@@ -10,10 +10,10 @@ following pages to determine if the simulations are realistic enough for
 their purpose.
 
 For example, the |marx| HRMA module uses a simplified geometry to speed up
-simulations so that the user can simulate millions of rays in just
-a few minutes on a typical desktop computer. Thus, the simulated PSF will
+simulations so that the user can simulate millions of rays in less than a
+minute on a typical desktop computer. Thus, the simulated PSF will
 certainly differ from the observed PSF. `SAOTrace`_ has more details, but does 
-not the
+not explain the
 `"hook" feature of the PSF
 <http://cxc.harvard.edu/ciao/caveats/psf_artifact.html>`_ seen on very small
 scales either. Only a comparison between simulations and observed data can tell
@@ -32,8 +32,7 @@ how well the simulations are doing.
 
 The code to run all these tests is available in the notebooks. Advanced users
 may wish to inspect the code of the tests for some more ideas on how to use
-|marx|. The code is lightly commented, but not in as much details as :ref:`examples`.
-It will not execute as-is on your computer because it depends on the
-local ``$PATH`` and other environment variables. For example, we use Python
-scripts to set up a directory structure, download Chandra
-data, initialize `CIAO`_ etc.
+|marx|. The code is lightly commented, but not in as much detail as :ref:`examples`.
+To execute the notebooks, you will need to be in a `CIAO`_ environment with
+|marx| and `SAOTrace`_ installed. We also use ``astropy``, a Python package that
+is not part of `CIAO`_ by default. You can install it using ``pip install astropy``.

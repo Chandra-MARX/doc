@@ -11,7 +11,7 @@ absorbed powerlaw spectrum with a column density of :math:`10^{19}` atoms/cm^2, 
 spectral index of 1.8. Rather than specifying an
 exposure time for the observation as in the other examples, here we
 specify the desired number of detected events.  In this case, the
-simulation will be run until 1,000,000 (1e6) events have been
+simulation will be run until 100,000 (1e5) events have been
 detected.
 
 .. _creating_sherpa_spectrum:
@@ -143,7 +143,7 @@ projected to the sky plane.
                  '"letgplaw_evt.fits[x=3950:4250][y=3950:4250][energy=500:2000][bin sky=1]" ' +
                  '"letgplaw_evt.fits[x=3950:4250][y=3950:4250][energy=2000:12000][bin sky=1]" ' +
                  'regionfile="" outfile="image_rgb.jpg" minred=0 mingreen=0 minblue=0 maxred=10 ' + 
-                 'maxgreen=50 maxblue=1000 clobber=yes', shell=True)
+                 'maxgreen=50 maxblue=50 clobber=yes', shell=True)
 
     import matplotlib.image as mpimg
     import matplotlib.pyplot as plt
@@ -161,7 +161,8 @@ right corresponds to diffracted photons from the primary grating bars
 of the LEG.  The events in this line are the subject of the spatial
 extraction step when creating the event histograms for spectral
 analysis, as described below.  The other blue lines in the fan-like
-structure correspond to photons that have also been diffracted by the
+structure (very faint, comes out better in longer simulations)
+correspond to photons that have also been diffracted by the
 fine support structure of the LEG. This fine support structure forms a
 grating that diffracts in a direction orthogonal to the primary
 diffraction direction.  The events in the multicolored line that runs

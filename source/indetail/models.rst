@@ -300,7 +300,7 @@ The probability that a ray starts at a given position is proportional to the pix
 Within a pixel, the position is randomized.
 |marx| inspects the header of the file for a WCS specification and extracts the pixel scale.
 However, it does **not** extract the position or orientation on the sky.
-|marx| will place the center of the image on the :par:`SourceRA` and :par:`SourceDec` parameters.
+|marx| will place the center of the image on the :par:`SourceRA` and :par:`SourceDEC` parameters.
 It does not make use of the orientation of the image. Instead, the axes directions
 are aligned with the detector axes. This means that the simulated image may appear to be rotated (if
 the WCS in the input image contains rotations which are ignored by |marx|) or flipped (if the WCS in the

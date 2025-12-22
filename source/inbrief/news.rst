@@ -24,17 +24,15 @@ bug fixes:
 - The "Verbose" parameter in ``marx.par`` is now an integer for more fine-grained verbosity control.
 - Fix a bug in a binary search algorithm that could lead to an off-by-one error
   and cause a 1 pix shift between input images and simulated images.
-- No longer check for the RA/Dec set when using an IMAGE source, since the
-  coordinates are taken from the image WCS, not the marx parameters anyway.
-- When running with the "RAYFILE" source, include dither information and do not run
+- When running with :par:`SourceType="RAYFILE"`, include dither information and do not run
   rays through the HRMA, grating, or detector, just generate the rays from the source.
 
 Most of the changes actually remove things that have been unused and deprecated for several years. In particular:
 
-- marx used to ship with IDL tools to extract grating spectra. This functionality has been part of CIAO for two decades and there is no need to separate tools as part of marx.
-- Remove binary tools such as ``marx2img`` - instead use CIAO tools such as ``dmcopy``.
+- marx used to ship with IDL tools to extract grating spectra. This functionality has been part of `CIAO`_ for two decades and there is no need for separate tools as part of marx.
+- Remove binary tools such as ``marx2img`` - instead use CIAO tools such as :ciao:`dmcopy`.
 - Remove support for other observatories such as IXO that were modelled with marx in the proposal stage but never flown.
-- Remove the obsolete ""EA_MIRROR"" mirror model.
+- Remove the obsolete "EA_MIRROR" mirror model.
 - Remove support for some legacy platforms in the configuration scripts.
 
 This release also updates the CALDB files that are shipped with |marx|.

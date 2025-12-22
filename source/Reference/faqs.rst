@@ -7,21 +7,11 @@ I have a question about marx that is not addressed here. Where can I get additio
 |marx| specific questions should be sent to |marx-email|.  If
 your question is related to `CIAO`_, then you should contact the `CXC helpdesk <http://asc.harvard.edu/helpdesk/index.html>`_.
 
-I'm using |marx| on Mac OS X and something does not work.
-=========================================================
-Over half of all user queries we receive are related to the broken compiler that ships with XCode on Mac OS X. Please see :ref:`knownbugs`.
-
 
 Do you distribute marx binaries?
 ================================
-No.  There are several reasons for this including the lack of
-resources.  Rather, we have tried to make the installation process as
-simple as possible so that even the most inexperienced user can do it.
-Step by step instructions for compiling |marx| are available on the
-:ref:`installing`.  The reward for compiling it
-yourself is that you can be sure that |marx| was built explicitly for
-your system, and as such, no incompatibilities should arise.  One
-cannot make this guarantee for a precompiled binary version.
+Yes, see :ref:`installing` for details on how to obtain pre-compiled
+binaries via conda.
 
 
 How do I create an ARF and RMF that match my marx simulation?

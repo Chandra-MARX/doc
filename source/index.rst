@@ -4,14 +4,12 @@ Welcome to MARX's documentation!
 .. admonition:: Current version of |marx| is |release|
 
    We now recommend to install |marx| together with CIAO as described in
-   https://cxc.cfa.harvard.edu/ciao/download/
+   https://cxc.cfa.harvard.edu/ciao/download/ .
    Of course, it is still possible to install |marx| from
    source as described in :ref:`installing`.
 
 .. warning::
-   Marx 6.0 improves error checking and user feedback in case of parameters errors
-   as well as some bug fixes. It is **not** fully backward compatible with version
-   5.x. In particular,
+   Marx 6.0 is **not** fully backward compatible with version 5.x. In particular,
 
    * The :par:`Verbose` parameter now requires an integer for finer control of
      the verbosity level.
@@ -20,6 +18,8 @@ Welcome to MARX's documentation!
      this purpose is :marxtool:`marx2fits`, followed by standard `CIAO`_
      procedures to make images or extract spectra.
 
+   This version also improves error checking and user feedback in case of parameters errors
+   as well as some bug fixes.
    See :ref:`highlights` for a full list of changes.
 
 
@@ -28,7 +28,7 @@ Welcome to MARX's documentation!
 to enable the user to simulate the on-orbit performance of the Chandra
 X-ray Observatory. |marx| provides a detailed ray-trace
 simulation of how Chandra responds to a variety of astrophysical
-sources and can generate standard FITS event files and images as
+sources and can generate standard FITS event files as
 output. It contains detailed models for Chandra's High Resolution
 Mirror Assembly (HRMA), the HETG and LETG gratings, and all the focal
 plane detectors.

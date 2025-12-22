@@ -62,21 +62,6 @@ taken from those documents.
 HRMA model
 ----------
 
-|marx| implements two different models for the HRMA onboard Chandra.
-Selection between these two models is accomplished using the :par:`MirrorType`
-parameter. The first of these models, the ``EA-MIRROR`` model, is a simpler
-representation of the ``HRMA`` based on effective area and point spread
-function tables. This model does not include any of the detailed
-characterization of the mirror such as misalignments, tilts, etc.
-present in the either the ``HRMA`` model or SAOSAC. The ``EA-MIRROR`` is limited
-to simulation of on-axis point sources. Use of the various spatial
-models listed in :ref:`sect-sourcemodels` requires the ``HRMA`` model in
-|marx| . The remainder of this discussion refers to the ``HRMA`` model
-which is the default model.
-
-HRMA Geometric Model
-^^^^^^^^^^^^^^^^^^^^^^
-
 The HRMA onboard Chandra consists of four Wolter Type I mirrors. These
 mirrors are nested and each shell consists of a paraboloid at the front
 and a hyperboloid at the back. The physical geometry of the HRMA is
@@ -88,10 +73,10 @@ various mirror shells relative to the optical axis. During the
 simulation, the paths of individual photons are traced through this
 geometric structure.
 
-The mirror support structure is not currently modeled as part of the
-HRMA raytrace. The vignetting effects of these structures is instead
-included as a uniform reduction in the total effective area of the HRMA.
-The degree of vignetting can be adjusted via the HRMAVig parameter. In
+The mirror support structure of the HRMA is modeled by default with
+:par:`HRMA_Use_Struts=yes`. It can be disabled and |marx| could instead
+include a uniform reduction in the total effective area of the HRMA.
+The degree of vignetting can be adjusted via the :par:`HRMAVig` parameter. In
 general, this parameter should not be modified.
 
 HRMA Reflectivity Model
@@ -122,7 +107,8 @@ reflection. This simple model assumes that the direction of the normal
 can vary from its ideal direction according to a Gaussian probability
 distribution whose standard deviation is given by the HRMABlur
 parameters. Blur parameters are specified for each of the parabolic and
-hyperbolic HRMA elements. This model produces a reasonable approximation
+hyperbolic HRMA elements (e.g. :par:`H1Blur` for hyperbolic mirror of shell 1).
+This model produces a reasonable approximation
 to the measured core of the HRMA PSF.
 
 In addition to a Gaussian core, the HRMA PSF exhibits energy–dependent
@@ -132,17 +118,16 @@ MST’s high fidelity raytrace SAOSAC. The probability that a photon’s
 scattered direction is displaced from a perfect reflection is determined
 using the results of WFOLD scattering tables which specify the
 probability that a photon of a given energy is scattered into a given
-angle. Since the previous release, the HRMA raytrace in |marx| has
-been improved to account for the individual scattering properties of the
+angle. The HRMA raytrace in |marx| accounts for the individual scattering properties of the
 various mirror components. For reference, SAOSAC breaks the HRMA P and H
-optics into many different segments with an associated WFOLD scattering
+optics into many segments with an associated WFOLD scattering
 table for each to better treat the changes in surface properties along
-the mirror surfaces. The files listed in Table [tab:hrma] and used by
+the mirror surfaces. The files used by
 |marx| represent the scattering properties for the midpoint of each
 hyperbolic and parabolic section of the HRMA. They do not include any
 alignment or gravity induced errors which are handled by the physical
-model of the HRMA. The normalizations of the various WFOLD scattering
-tables can be adjusted using the ScatFactor parameters. The WFOLD
+model of the HRMA. The normalization of the various WFOLD scattering
+tables can be adjusted using the ScatFactor parameters (e.g. :par:`H1ScatFactor`). The WFOLD
 scattering model can be disabled in |marx| by setting the parameter
 :par:`HRMA_Use_WFold="no"`.
 
@@ -694,11 +679,8 @@ Unique quantum efficiency curves are used for the MCPs in the HRC–I and
 HRC-S; however, all three HRC-S MCPs are currently assumed to have the
 same quantum efficiency. As the Chandra calibration effort progresses,
 these curves will be replaced by specific curves for each MCP.
-
 Quantum efficiency (QE) files are available for the 10 CCDs
-comprising the ACIS-I and ACIS-S detectors. In the previous version of
-|marx| , QE files where available only for generic front-illuminated
-and back-illuminated CCDs. 
+comprising the ACIS-I and ACIS-S detectors.
 
 If the parameter :par:`DetIdeal="yes"`, the QE of the selected focal plane
 detector (including any filter transmission) will be set to unity.
@@ -753,10 +735,13 @@ determined by the CXC CCD Calibration data mentioned above.
    redistribution peak.
 
 The gain and spectral response of the ACIS CCDs are also functions of
-focal plane temperature. At the time of this release, complete
-calibration data is available for a focal plane temperature of -110 C. A
-|marx| gain map will be released for -120 C when this data becomes
-available.
+focal plane temperature and change over time both over years as the
+spacecraft and the detectors age, and also within an observation as the
+focal plane temperature changes. In recent years, temperature changes
+within an observation increased as Chandra's thermal insulation
+degraded. |marx| cannot predict the temperature of the focal plane and
+simulations assume nominal gain files from the CXC Calibration group.
+
 
 More information on the ACIS energy resolution can be found at
 http://cxc.harvard.edu/proposer/POG/html/chap6.html#tth_sEc6.7 .
@@ -828,8 +813,8 @@ HESF
 ~~~~
 
 Due to the poor intrinsic energy resolution of the HRC-S, order sorting
-for astrophysical spectra obtained with the LETG+HRC-S combination will
-be difficult. In an attempt to ameliorate this problem, the High Energy
+for astrophysical spectra obtained with the LETG+HRC-S combination
+not possible in practice. In an attempt to ameliorate this problem, the High Energy
 Reflection Filter (HESF) was added to the original HRC-S design. The
 HESF (a.k.a. Drake Flat) is a two facet filter coated with Cr and C
 which can be inserted into the Chandra beam by a translation of the SIM

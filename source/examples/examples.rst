@@ -44,14 +44,15 @@ translates to a command line of::
 
     unix% dmcopy "marx_saotrace.fits[@${evt2file}[GTI4]]" marx_saotrace-filtered.fits clobber=yes
 
-All examples could also be written as shell scripts, but we find Python convenient and
-it is automatically installed with `CIAO`_.
-
-|marx| currently does not have a nice Python interface, so to call |marx| we simply
+|marx| itself currently does not have a nice Python interface, so to call |marx| we simply
 pass a string directly from Python to the shell, such as::
 
     import subprocess
     out = subprocess.call('marx SourceType="point" OutputDir="result"', shell=True)
+
+which is the equivalent of the shell command::
+
+    unix% marx SourceType="point" OutputDir="result"
 
 If we run |marx| multiple times in one example, we can use Python to parameterize that::
 
@@ -60,6 +61,8 @@ If we run |marx| multiple times in one example, we can use Python to parameteriz
 
 Still, it should not be difficult to convert these examples to shell scripts so that
 they can be pasted directly on the command line.
+
+We present the following examples:
 
 .. toctree::
    :maxdepth: 1

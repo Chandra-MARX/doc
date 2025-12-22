@@ -8,7 +8,7 @@ Downloading and Installing Marx
 compiled before it can be used.  This process is fairly painless and
 is something that even those who have never compiled a C program
 before can do.  It is written in ANSI-C (with a few POSIX extensions)
-and is intended to be portable across most 32 and 64 bit Unix
+and is intended to be portable across most 64 bit Unix
 operating systems, as well as MacOSX and CYGWIN.
 
 
@@ -42,7 +42,7 @@ Next uncompress and untar the file::
 (Some webbrowsers will automatically unzip a file when downloaded).  At this point the tar file is
 no longer needed so it may be removed::
 
-    rm marx-6.0.1.tar.g
+    rm marx-6.0.1.tar.gz
 
 Now change to the newly created directory to start the build process::
 
@@ -107,8 +107,7 @@ Assuming all has gone well, execute the ``make`` command::
 
     make
 
-(If this step fails and you are unable to resolve the problem, then
- contact |marx-email|.)
+(If this step fails and you are unable to resolve the problem, then contact |marx-email|.)
 
 The final step in the installation process is to actually install the
 compiled executables.  If you do not have write permission to the

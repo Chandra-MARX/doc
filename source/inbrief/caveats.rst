@@ -37,7 +37,7 @@ variations in the QE are relatively small on this CCD. However,
 simulated ACIS-I observations will be effected to a greater degree due
 to the larger QE variations produced by CTI effects.
 
-For users of `CIAO`_ 2.3 and higher, the tools :ciao:`mkarf` and :ciao:`mkinstmap`
+The tools :ciao:`mkarf` and :ciao:`mkinstmap`
 include the ability to turn off the QE uniformity maps through the use
 of :ciao:`ardlib` qualifiers.  For example, a calling sequence like::
 
@@ -73,7 +73,7 @@ Mismatch between the FEF-based response and the CALDB order-sorting tables
 ==========================================================================
 As mentioned above, |marx| generates non-CTI corrected PHA values. This
 is accomplished by mapping the incident photon energy to a PHA value
-using a probability from derived from the most recent non-CTI
+using a probability derived from the most recent non-CTI
 calibration data (CALDB ``acisD2000-01-29fef_phaN0005.fits``).  The CIAO
 tool :ciao:`tg_resolve_events` assigns a diffracted order to each event
 by comparing the event's ACIS energy to its dispersion coordinate.
@@ -99,8 +99,8 @@ of the input model will show strong systematic residuals near 1.8 keV.
    parameter set to the name of the file.
 
 
-ISIS Pileup Fitting Kernel
-==========================
+Pileup Fitting Kernel
+=====================
 
 The default parameters for the pileup fitting kernel in `ISIS`_, but also in
 `Sherpa`_ and `XSpec`_ have been

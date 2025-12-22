@@ -98,7 +98,7 @@ method most users will employ most of the time.
    **This mode takes precedence over ray generation mode.
    If the ExposureTime parameter is set to any positive,
    non-zero value, the simulation will be run in timed exposure mode.**
-   Users wishing to run simulations in ray generation mode, should set
+   Users wishing to run simulations in ray generation mode should set
    ``ExposureTime=0``.
 
 .. parameter:: NumRays
@@ -160,14 +160,10 @@ to be used in the simulation as well as which of |marx| mirror models to use.
 
 .. parameter:: MirrorType
 
-   This parameter can be one of three values: ``HRMA``, ``EA-MIRROR``, or ``FLATFIELD``.
+   This parameter can be one of two values: ``HRMA``, ``FLATFIELD``.
    The ``HRMA`` model is a full raytrace using an accurate physical model of the
    HRMA's parabolic and hyperbolic components. Mode details can be found in
-   :ref:`sect-HRMA`. ``EA-MIRROR`` model is a simpler
-   model based on a thin--lens approximation and using tabulated
-   effective area and point spread function data. This simple model is of historical interest only
-   and is no longer accurate or supported. This option should *not*
-   be selected. 
+   :ref:`sect-HRMA`.
 
    If ``MirrorType=FLATFIELD``, |marx| will propagate rays to a specified
    rectangular region in the focal plane parallel to the optical axis.
@@ -282,6 +278,13 @@ along the optical axis is also possible to adjust the focus.
    in the ACIS CCDs. Defocusing is one possible
    means of minimizing this effect for a given observation.
 
+.. parameter:: DetOffsetY
+
+   Offset in mm from the nominal on-axis, in-focus SIM position.
+
+   For simulating flight behavior, Y axis translation is not permitted
+   and thus ``DetOffsetY=0`` should be used.
+
 .. parameter:: DetOffsetZ
 
    Offset in mm from the nominal on-axis, in-focus SIM position.
@@ -316,7 +319,7 @@ Source Position
 
 .. parameter:: SourceDEC
 
-   RA of source in the sky in decimal degrees. 
+   DEC of source in the sky in decimal degrees.
    Corresponds on the ``DEC_TARG`` FITS header keyword in a standard
    Chandra Level 2 events file.
 
@@ -328,7 +331,7 @@ Source Position
 
 .. parameter:: Dec_Nom
 
-   RA of nominal aimpoint in the sky in decimal degrees. 
+   DEC of nominal aimpoint in the sky in decimal degrees.
    Corresponds on the ``DEC_NOM`` FITS header keyword in a standard
    Chandra Level 2 events file.
 
@@ -469,7 +472,7 @@ user has some control over the form of the randomization blur via the
 :marxtool:`marx2fits` ``--pixadj`` option.
 
 Figure :ref:`dither <fig-ditherexp>` shows an example of a simulated
-ACIS-I observation of a cluster of galaxies with and without
+ACIS-I observation of a cluster of galaxies without and with
 aspect motion included.
 
 .. _fig-ditherexp:
@@ -499,7 +502,7 @@ HRC observations with dither can be simulated by adjusting the
 Current values for Chandra are listed in the
 `Proposers Observatory Guide (POG) <https://cxc.harvard.edu/proposer/POG/html/chap5.html#tb:dither>`_.
 
-Finally, if :par:`DitherModel=FILE`, |marx| will use the contents on
+Finally, if :par:`DitherModel=FILE`, |marx| will use the contents of
 an aspect solution file (ASPSOL) to specify the dither motion pattern.
 The name of the ASPSOL file to use is specified by the :par:`DitherFile`
 parameter. ASPSOL files can be produced by
@@ -527,45 +530,34 @@ which data files were accessed. Output from an example
 using the ACIS-I with dither enabled is shown here::
 
     unix% marx
-    MARX version 4.0.8, Copyright (C) 2002 Massachusetts Institute of Technology
-   
-    	/usr/local/src/marx_4.0.8-dist/marx/data/hrma/EKCHDOS06.rdb
-    Reading binary HRMA optical constants:
-	/usr/local/src/marx_4.0.8-dist/marx/data/hrma/iridium.dat
-	/usr/local/src/marx_4.0.8-dist/marx/data/hrma/corr_1.dat
-	/usr/local/src/marx_4.0.8-dist/marx/data/hrma/corr_3.dat
-	/usr/local/src/marx_4.0.8-dist/marx/data/hrma/corr_4.dat
-	/usr/local/src/marx_4.0.8-dist/marx/data/hrma/corr_6.dat
+    MARX version 6.0.1, Copyright (C) 2002-2025 Massachusetts Institute of Technology
+
+    Reading binary HRMA optical constants
     Reading scattering tables
-	/usr/local/src/marx_4.0.8-dist/marx/data/hrma/scat_p1_M.bin
-	/usr/local/src/marx_4.0.8-dist/marx/data/hrma/scat_h1_M.bin
-	/usr/local/src/marx_4.0.8-dist/marx/data/hrma/scat_p3_M.bin
-	/usr/local/src/marx_4.0.8-dist/marx/data/hrma/scat_h3_M.bin
-	/usr/local/src/marx_4.0.8-dist/marx/data/hrma/scat_p4_M.bin
-	/usr/local/src/marx_4.0.8-dist/marx/data/hrma/scat_h4_M.bin
-	/usr/local/src/marx_4.0.8-dist/marx/data/hrma/scat_p6_M.bin
-	/usr/local/src/marx_4.0.8-dist/marx/data/hrma/scat_h6_M.bin
-    Initializing ACIS-I detector...
+    Initializing ACIS-S detector...
     Reading ACIS-I/S FEF File
-    	/usr/local/src/marx_4.0.8-dist/marx/data/caldb/acisfef.fits
-    Reading ACIS-I QE/Filter Files
-	/usr/local/src/marx_4.0.8-dist/marx/data/caldb/acisD1997-04-17qeN0004.fits for [CCDID = 0]
-	/usr/local/src/marx_4.0.8-dist/marx/data/caldb/acisD1997-04-17qeN0004.fits for [CCDID = 1]
-	/usr/local/src/marx_4.0.8-dist/marx/data/caldb/acisD1997-04-17qeN0004.fits for [CCDID = 2]
-	/usr/local/src/marx_4.0.8-dist/marx/data/caldb/acisD1997-04-17qeN0004.fits for [CCDID = 3]
+    Reading ACIS-S QE/Filter Files
+    Reading ACIS4 Contamination File
+    Reading ACIS5 Contamination File
+    Reading ACIS6 Contamination File
+    Reading ACIS7 Contamination File
+    Reading ACIS8 Contamination File
+    Reading ACIS9 Contamination File
     [Using INTERNAL dither model]
     Initializing source type POINT...
     System initialized.
 
-    Starting simulation.  Exposure Time set to 3.000000e+04 seconds
+    Starting simulation.  Exposure Time set to 1.000000e+04 seconds
     Collecting 100000 photons...
-	67631 collected.
+            67782 photons collected.
     Reflecting from HRMA
-    Detecting with ACIS-I
+    Diffracting from HETG.
+    Detecting with ACIS-S
 
     Writing output to directory 'point' ...
-    Total photons: 67631, Total Photons detected: 18060, (efficiency: 0.267037)
-       (efficiency this iteration  0.267037)  Total time: 30000.079736
+    Total photons: 67782, Total Photons detected: 5915, (efficiency: 0.087265)
+    (efficiency this iteration  0.087265)  Total time: 10000.077041
+
 
 Once the initialization is complete, |marx| will begin processing
 groups of rays. Again, diagnostic messages will be generated which track
@@ -580,7 +572,7 @@ integration time has been reached, the simulation will terminate.
 .. parameter:: Verbose
 
    The diagnostic messages can be quieted by setting the parameter
-   ``Verbose="no"``.
+   ``Verbose="0"`` and more detailed output can be printed with higher values.
 
 |marx| Native Binary Output Files
 =================================
@@ -590,7 +582,7 @@ parameters, |marx| will by default create a directory containing a number
 of binary output files. Usually, a user will not use these files directly, but
 convert them to fits files using :marxtool:`marx2fits` (see below). 
 The native binary format is discussed in more detail in the description of the
-parameter :par:`Outputvectors`.
+parameter :par:`OutputVectors`.
 
 These native binary vectors provide convenient access to the individual
 properties of detected photons. For example, to create an ASCII file
